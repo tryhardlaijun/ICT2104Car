@@ -8,7 +8,8 @@
 
 coordinate* updateCoordinateToMap(coordinate* Map, coordinate c);
 
-int findLastExplored(coordinate* Map);
+int getTotalCoordinatesInMap(coordinate* Map);
 
 void printMap(coordinate* Map);
 
+coordinate* replicateLastPosition(coordinate* Map);

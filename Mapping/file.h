@@ -4,9 +4,10 @@
 #include<stdlib.h>
 #define MAX 1000
 
-
 int binaryToNumber(char* binaryString);
 
 int readFile(int* sensorArray);
 
 int* getSensorArrayFromText();
+
+int getTotalLines();
