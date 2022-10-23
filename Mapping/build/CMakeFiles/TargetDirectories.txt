@@ -1,3 +1,0 @@
-/home/wenju/pico/ICT2104Project/Mapping/build/CMakeFiles/mapping.dir
-/home/wenju/pico/ICT2104Project/Mapping/build/CMakeFiles/edit_cache.dir
-/home/wenju/pico/ICT2104Project/Mapping/build/CMakeFiles/rebuild_cache.dir
