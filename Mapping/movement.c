@@ -3,7 +3,7 @@
 #include "coordinate.h"
 
 enum movement{YPlus, XPlus, YMinus, XMinus};
-enum turns{FORWARD = 0 , RIGHT = 1 , LEFT = -1};
+enum turns{FORWARD = 0 , RIGHT = 1 , LEFT = -1 , REVERSE = -2};
 
 int updateUnexploredPath(coordinate* c){
     //reset the 2nd bit (Check If front is open)
@@ -91,8 +91,8 @@ int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordi
             break;
         default:
             return -1;
-        return 1;
     }
+    return 1;
 }
 int getnextMove(coordinate* c){
     //remove all bits but the 2nd bit. (Check If front is open)
@@ -117,7 +117,10 @@ int getnextMove(coordinate* c){
     // It is a dead end all bits are 0.
     else{
         printf("Explored Or Dead End\n");
-        return -2;
+        //Car would turn around by turning right twice
+        c->nextOrientation = turnNextOrientationRight(c->nextOrientation);
+        c->nextOrientation = turnNextOrientationRight(c->nextOrientation);
+        return REVERSE;
     }
 }
 

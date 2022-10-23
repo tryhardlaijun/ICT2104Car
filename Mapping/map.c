@@ -40,6 +40,8 @@ int getTotalCoordinatesInMap(coordinate* map){
     return -1;
 }
 
+
+//Print all coordinate info from the map
 void printMap(coordinate* map){
     int count = getTotalCoordinatesInMap(map);
     for(int i = 0; i < count+1; i++){
@@ -47,58 +49,24 @@ void printMap(coordinate* map){
     }
 }
 
+
+//Return a copy of the coordinate at the end of the map
 coordinate replicateLastPosition(coordinate* map){
     //Get size of the map 
     int lastPosition = getTotalCoordinatesInMap(map);
     return map[lastPosition];
 }
 
-int checkIfLoop(coordinate* map , coordinate c){
+// >= 0 Looped, -1 no need to reverse
+int checkIfAlreadyInMap(coordinate* map , coordinate c){
     int totalCoordinate = getTotalCoordinatesInMap(map);
+    //Check if loop
     for(int i = 0; i < totalCoordinate; i++){
         if(c.x == map[i].x && c.y == map[i].y){
             return i;
         }
     }
+    //No need to reverse.
     return -1;
 }
 
-
-int main(){
-    coordinate* map = NULL;
-    int * extraPlaceArray = NULL;
-    int totalLines = getTotalLines();
-    int* sensorArray = getSensorArrayFromText();
-    for(int i =0; i < totalLines; i++){
-        //If at the very beginning.
-        if(map == NULL){
-            map = malloc(sizeof(coordinate));
-            *map = initStartingCoordinate();
-            updateCoordinatePaths(map,sensorArray[0]);
-            getnextMove(map);
-        }
-        else{
-            //Replicate a coordinate like the previous map
-            coordinate c = replicateLastPosition(map);
-            // Update current path
-            updateCoordinatePaths(&c , sensorArray[i]);
-            // Update Orientation
-            getnextMove(&c);
-            // Update where the current coordinate is
-            updateXYCoordinate(&map[i-1],&c);
-            // Update Unexplored Path for current path
-            int pathRemain = updateUnexploredPath(&map[i-1]);
-            //Add current coordinate to map
-            map = updateCoordinateToMap(map, c);
-            // Check if next coordinate cause a loop or is coordinate deadend.
-            if(checkIfLoop(map,c) != -1 ||  !c.pathUnexplored){
-                printf("THERE IS LOOP HERE OR DEADEND (REVERSE)\n");
-                // INSERT NAOMI'S CODE
-            }
-            
-
-        }
-    }
-    printMap(map);
-
-}
