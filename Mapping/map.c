@@ -1,9 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include "coordinate.h"
-#define MAX 1000
+#include "map.h"
 
-coordinate* addCoordinateToMap(coordinate* Map, coordinate c){
+coordinate* updateCoordinateToMap(coordinate* Map, coordinate c){
     //Map[lastPosition] -> Last explored
     int lastPosition = findLastExplored(Map);
     //+1 -> Starting from 0 then +1 again -> extra space for new coordinate
@@ -25,7 +22,7 @@ coordinate* addCoordinateToMap(coordinate* Map, coordinate c){
     Map[lastPosition+1] = c;
     //Ensure last memory isLast bit is 1
     Map[lastPosition+1].isLast = 1;
-    
+
     return Map;
 }
 
@@ -42,13 +39,22 @@ int findLastExplored(coordinate* Map){
     //Return -1 signal error.
     return -1;
 }
+
+void printMap(coordinate* Map){
+    int count = findLastExplored(Map);
+    for(int i = 0; i < count+1; i++){
+       printCoordinate(Map[i]);
+    }
+}
 int main(){
     coordinate* Map = NULL;
     if(Map == NULL){
         Map = malloc(sizeof(coordinate));
         *Map = initStartingCoordinate();
     }
-    Map = addCoordinateToMap()
-    printf("%d\n",findLastExplored(Map));
-
+    Map = updateCoordinateToMap(Map, makeCoordinate(1,4,2,3,2,1));
+    Map = updateCoordinateToMap(Map, makeCoordinate(2,3,2,3,2,1));
+    Map = updateCoordinateToMap(Map, makeCoordinate(3,2,2,4,2,1));
+    Map = updateCoordinateToMap(Map, makeCoordinate(4,1,2,3,2,1));
+    printMap(Map);
 }
