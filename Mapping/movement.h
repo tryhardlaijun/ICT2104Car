@@ -8,15 +8,15 @@ enum movement;
 enum turns;
 
 
-int updatePreviousCoordinate(coordinate* c);
+int updateUnexploredPath(coordinate* c);
 
-int turnOrientationRight(int orientation);
+int turnNextOrientationLeft(int orientation);
 
-int turnOrientationLeft(int orientation);
+int turnNextOrientationRight(int orientation);
 
 int getAbsoluteMovement(int coordinateOrientation , int nextMove);
 
-int updateXYCoordinate(coordinate* c);
+int updateXYCoordinate(coordinate* ,coordinate* );
 
 int getnextMove(coordinate* c);
 
