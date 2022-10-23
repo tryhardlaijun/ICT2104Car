@@ -29,3 +29,4 @@ coordinate initStartingCoordinate();
 
 coordinate makeCoordinate(int x , int y, int pathAvail, int pathUnexplored, int orientation, int isLast);
 
+void printCoordinate(coordinate c);
