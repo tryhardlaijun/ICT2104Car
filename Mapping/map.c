@@ -1,8 +1,14 @@
 #include "map.h"
 #include "movement.h"
+
 coordinate* updateCoordinateToMap(coordinate* map, coordinate c){
+    int lastPosition = 0;
     //map[lastPosition] -> Last explored
-    int lastPosition = getTotalCoordinatesInMap(map);
+    if(map == NULL){
+        lastPosition = -1;
+    }
+    else
+    lastPosition = getTotalCoordinatesInMap(map);
     //+1 -> Starting from 0 then +1 again -> extra space for new coordinate
     //Realloc would copy all the current data into a new space with extra space
     //then free the previous memory used, 
@@ -16,8 +22,10 @@ coordinate* updateCoordinateToMap(coordinate* map, coordinate c){
     else{
         map = temp;
     }
-    //Ensure previous Explored Coordinate is no longer labelled last
-    map[lastPosition].isLast = 0;
+    if(lastPosition >= 0){
+        //Ensure previous Explored Coordinate is no longer labelled last
+        map[lastPosition].isLast = 0;
+    }
     //Update new coordinate to newly create space
     map[lastPosition+1] = c;
     //Ensure last memory isLast bit is 1
@@ -59,6 +67,9 @@ coordinate replicateLastPosition(coordinate* map){
 
 // >= 0 Looped, -1 no need to reverse
 int checkIfAlreadyInMap(coordinate* map , coordinate c){
+    if(map == NULL){
+        return -1;
+    }
     int totalCoordinate = getTotalCoordinatesInMap(map);
     //Check if loop
     for(int i = 0; i < totalCoordinate; i++){
@@ -69,4 +80,3 @@ int checkIfAlreadyInMap(coordinate* map , coordinate c){
     //No need to reverse.
     return -1;
 }
-
