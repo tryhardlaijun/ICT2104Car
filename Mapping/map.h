@@ -14,3 +14,4 @@ coordinate replicateLastPosition(coordinate* map);
 
 int checkIfAlreadyInMap(coordinate* map , coordinate c);
 
+coordinate* initMap();

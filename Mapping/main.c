@@ -3,14 +3,13 @@
 
 int main(){
     coordinate* map = NULL;
-    int * extraPlaceArray = NULL;
+    coordinate* unexploredCoordinates = NULL;
     int totalLines = getTotalLines();
     int* sensorArray = getSensorArrayFromText();
     for(int i =0; i < totalLines; i++){
         //If at the very beginning.
         if(map == NULL){
-            map = malloc(sizeof(coordinate));
-            *map = initStartingCoordinate();
+            map = updateCoordinateToMap(map, initStartingCoordinate());
             updateCoordinatePaths(map,sensorArray[0]);
             getnextMove(map);
         }
@@ -30,17 +29,26 @@ int main(){
             // Check if next coordinate has already been explored
             int isExplored = checkIfAlreadyInMap(map , c);
             //Check if map has been explored
-            if(c.x == 0 && c.y == 0){
-                printf("g");
-            }
-            if(checkIfAlreadyInMap(map,c) == -1){
+            if(isExplored == -1){
+                // Unexplored
                 //Naomi's Code to go to the unexplored spot
                 //Add current coordinate to map if unexplored
                 map = updateCoordinateToMap(map, c);
             }
+            else{ //Explored
+                //Check if in unexploredArray
+                int getUnexploredPosition = checkIfAlreadyInMap(unexploredCoordinates,c);
+                if(getUnexploredPosition != -1){
+                    unexploredCoordinates[getUnexploredPosition] = c;
+                }
+                
+            }
+            if(pathRemain != 0){
+                unexploredCoordinates = updateCoordinateToMap(unexploredCoordinates, map[lastPosition]);
+            }
 
         }
     }
-    printMap(map);
+    printMap(unexploredCoordinates);
 
 }
