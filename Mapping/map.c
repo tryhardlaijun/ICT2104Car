@@ -47,10 +47,10 @@ void printMap(coordinate* map){
     }
 }
 
-coordinate* replicateLastPosition(coordinate* map){
+coordinate replicateLastPosition(coordinate* map){
     //Get size of the map 
     int lastPosition = getTotalCoordinatesInMap(map);
-    return &map[lastPosition];
+    return map[lastPosition];
 }
 
 
@@ -63,12 +63,10 @@ int main(){
     }
     map = updateCoordinateToMap(map, makeCoordinate(1,4,2,3,2,1));
     map = updateCoordinateToMap(map, makeCoordinate(2,3,2,3,2,1));
-    map = updateCoordinateToMap(map, makeCoordinate(3,2,2,4,2,1));
-    map = updateCoordinateToMap(map, makeCoordinate(4,1,3,7,2,1));
-    coordinate* last = replicateLastPosition(map);
-    last->x = 11110;
-    nextMove(last);
-    nextMove(last);
-    nextMove(last);
-    printMap(map);
+    map = updateCoordinateToMap(map, makeCoordinate(4,4,2,4,2,1));
+    map = updateCoordinateToMap(map, makeCoordinate(1,1,3,2,0,1));
+    map = updateCoordinateToMap(map, replicateLastPosition(map));
+
+
+
 }

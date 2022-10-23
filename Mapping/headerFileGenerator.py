@@ -7,7 +7,7 @@ filename = "movement"
 x = 0
 with open(filename + ".c", encoding='utf8') as f:
     for line in f:
-        if((re.match(pattern, line) and "main" not in line and "struct" not in line)) :
+        if((re.match(pattern, line) and "main" not in line and "struct" not in line and "enum" not in line)) :
             if(line[0] != "#" and count == 0):
                 count+=1
                 headerText += "\n\n"

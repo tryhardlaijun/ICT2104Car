@@ -4,8 +4,19 @@
 #include "file.h"
 #include "coordinate.h"
 
-
 enum movement;
+enum turns;
 
-int nextMove(coordinate* c);
+
+int updatePreviousCoordinate(coordinate* c);
+
+int turnOrientationRight(int orientation);
+
+int turnOrientationLeft(int orientation);
+
+int getAbsoluteMovement(int coordinateOrientation , int nextMove);
+
+int updateXYCoordinate(coordinate* c);
+
+int getnextMove(coordinate* c);
 
