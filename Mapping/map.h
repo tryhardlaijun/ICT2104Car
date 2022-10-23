@@ -12,4 +12,4 @@ int getTotalCoordinatesInMap(coordinate* Map);
 
 void printMap(coordinate* Map);
 
-coordinate* replicateLastPosition(coordinate* Map);
+coordinate replicateLastPosition(coordinate* Map);
