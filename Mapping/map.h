@@ -1,15 +1,16 @@
 #pragma once 
 
-#include<stdio.h>
-#include<stdlib.h>
-#include "coordinate.h"
-#define MAX 1000
+#include "map.h"
+#include "movement.h"
 
 
-coordinate* updateCoordinateToMap(coordinate* Map, coordinate c);
+coordinate* updateCoordinateToMap(coordinate* map, coordinate c);
 
-int getTotalCoordinatesInMap(coordinate* Map);
+int getTotalCoordinatesInMap(coordinate* map);
 
-void printMap(coordinate* Map);
+void printMap(coordinate* map);
 
-coordinate replicateLastPosition(coordinate* Map);
+coordinate replicateLastPosition(coordinate* map);
+
+int checkIfAlreadyInMap(coordinate* map , coordinate c);
+

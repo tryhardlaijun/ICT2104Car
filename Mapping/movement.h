@@ -4,19 +4,16 @@
 #include "file.h"
 #include "coordinate.h"
 
-enum movement;
-enum turns;
-
 
 int updateUnexploredPath(coordinate* c);
 
-int turnNextOrientationLeft(int orientation);
+int turnNextOrientationRight(int nextOrientation);
 
-int turnNextOrientationRight(int orientation);
+int turnNextOrientationLeft(int nextOrientation);
 
 int getAbsoluteMovement(int coordinateOrientation , int nextMove);
 
-int updateXYCoordinate(coordinate* ,coordinate* );
+int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordinate);
 
 int getnextMove(coordinate* c);
 
