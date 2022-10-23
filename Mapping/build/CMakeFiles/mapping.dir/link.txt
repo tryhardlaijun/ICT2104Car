@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/mapping.dir/main.c.o -o mapping 
