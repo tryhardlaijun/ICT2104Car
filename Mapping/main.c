@@ -49,6 +49,6 @@ int main(){
 
         }
     }
-    printMap(unexploredCoordinates);
+    printMap(map);
 
 }
