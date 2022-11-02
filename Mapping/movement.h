@@ -15,5 +15,5 @@ int getAbsoluteMovement(int coordinateOrientation , int nextMove);
 
 int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordinate);
 
-int getnextMove(coordinate* c);
+int getnextMove(coordinate* c, coordinate end);
 

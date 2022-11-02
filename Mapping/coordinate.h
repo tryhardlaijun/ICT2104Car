@@ -19,7 +19,7 @@ typedef struct coordinate
     // 2 bit datatype
     //Orientaton of the car after its next move.(Absoulute)
     //Absolute meaning relative to where is starts rather than the car original orientation
-    // 0 = same  as the origin || 1 = left of origin || 2 back of origin || 3 Left of origin
+    // 0 = same  as the origin || 1 = left of origin || 2 back of origin || 3 Right of origin
     unsigned int nextOrientation : 2; //2 Bits
     // 1 bit datatype
     // 1 = Last explored coordinate.
@@ -28,8 +28,10 @@ typedef struct coordinate
 
 coordinate initStartingCoordinate();
 
+coordinate initEndingCoordinate();
+
 coordinate makeCoordinate(int x , int y, int pathAvail, int pathUnexplored, int nextOrientation, int isLast);
 
-void printCoordinate(coordinate c);
+void printCoordinate(coordinate c, int i);
 
 void updateCoordinatePaths(coordinate* c , int path);

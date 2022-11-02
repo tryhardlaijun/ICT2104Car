@@ -9,10 +9,10 @@ coordinate* updateCoordinateToMap(coordinate* map, coordinate c){
     }
     else
     lastPosition = getTotalCoordinatesInMap(map);
-    //+1 -> Starting from 0 then +1 again -> extra space for new coordinate
-    //Realloc would copy all the current data into a new space with extra space
+    //+1 -> Sarting from 0 then +1 again -> extra space for new coordinate
+    // would copy all the current data into a new space with extra space
     //then free the previous memory used, 
-    //unless the current address is being used.
+    //unless the current address is being used.t
     coordinate* temp = realloc(map,sizeof(coordinate)*(lastPosition+1+1));
     // NULL means computer not enough space to reallocate
     if(temp == NULL){
@@ -52,11 +52,10 @@ int getTotalCoordinatesInMap(coordinate* map){
 //Print all coordinate info from the map
 void printMap(coordinate* map){
     int count = getTotalCoordinatesInMap(map);
-    for(int i = 0; i < count+1; i++){
-       printCoordinate(map[i]);
+    for(int i = 1; i < count+1; i++){
+       printCoordinate(map[i], i);
     }
 }
-
 
 //Return a copy of the coordinate at the end of the map
 coordinate replicateLastPosition(coordinate* map){
