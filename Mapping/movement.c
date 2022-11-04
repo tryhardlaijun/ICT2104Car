@@ -69,8 +69,8 @@ int getAbsoluteMovement(int coordinateOrientation , int nextMove){
     else
         return -1;
 }
-// zaf: aded maxOf variables
-int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordinate, int* maxOfPositiveX, int* maxOfNegativeX, int* maxOfPositiveY, int* maxOfNegativeY){
+
+int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordinate){
     // update coordinate by checking if the vehicle turned in the previous
     switch (previousCoordinate->nextOrientation)
     {
@@ -93,27 +93,6 @@ int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordi
         default:
             return -1;
     }
-
-
-    // zafff
-    if (currentCoordinate->x > *maxOfPositiveX) {
-        *maxOfPositiveX = currentCoordinate->x;
-    }
-    else if (currentCoordinate->x < 0) {
-        if (currentCoordinate->x < *maxOfNegativeX) {
-            *maxOfNegativeX = currentCoordinate->x;
-        }
-    }
-
-    if (currentCoordinate->y > *maxOfPositiveY) {
-        *maxOfPositiveY = currentCoordinate->y;
-    }
-    else if (currentCoordinate->y < 0) {
-        if (currentCoordinate->y < *maxOfNegativeY) {
-            *maxOfNegativeY = currentCoordinate->y;
-        }
-    }
-
     return 1;
 }
 int getnextMove(coordinate* c){
