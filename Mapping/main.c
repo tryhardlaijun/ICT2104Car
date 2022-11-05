@@ -45,14 +45,6 @@ char* gridBuilder(char *printExplored, int index, int arrayWidth) {
         return gridStringConcat(printExplored, arrayWidth, borderStrOuter, borderStrOuterToAdd, strLen);
     return gridStringConcat(printExplored, arrayWidth, borderStrInner, borderStrInnerToAdd, strLen);
 
-    // if (gridWidth == 3)
-    //     return strcpy(printExplored, borderStr);
-    // strcpy(printExplored, borderStr);
-    // for (int i=0; i<gridWidth-strLen; i++) {
-    //     strcat(printExplored, borderStrToAdd);
-    // }
-
-    // gridStringConcat(printExplored);
 };
 
 int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *startPositionY, int *startPositionX) {
@@ -372,7 +364,7 @@ void generateMap(coordinate *map) {
     }
     free(stringList);
 
-    return 0;
+    
 }
 
 
