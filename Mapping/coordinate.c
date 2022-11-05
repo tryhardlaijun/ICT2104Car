@@ -2,12 +2,12 @@
 
 // Declare all variable as 0 but isLast is 1;
 coordinate initStartingCoordinate(){
-    coordinate startingCoordinate = {0,0,0,0,0,1};
+    coordinate startingCoordinate = {0,0,0,0,1,1};
     return startingCoordinate;
 }
 
 coordinate initEndingCoordinate(){
-    coordinate endingCoordinate = {4,0,0,0,0,1};
+    coordinate endingCoordinate = {0,1,0,0,0,1};
     return endingCoordinate;
 }
 
@@ -32,15 +32,20 @@ void printCoordinate(coordinate c, int i){
     c.pathUnexplored,c.nextOrientation,c.isLast);
 }
 // input the path into a coordinates unexplored and availalbe path.
-void updateCoordinatePaths(coordinate* c , int path){
+int updateCoordinatePaths(coordinate* c , int path){
     c->pathUnexplored = path;
     c->pathAvail = path;
     if (c->pathUnexplored == 3) //
     {
-        //printf("\nCan turn right here    ");
+        printf("\nCan turn right here    ");
+        return 1;
+    }
+    else{
+        return 0;
     }
     
     //printf("\tpathUnexplored is %d\t\n" ,c->pathUnexplored);
 }
+
 
 

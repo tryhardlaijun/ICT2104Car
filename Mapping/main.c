@@ -1,17 +1,20 @@
 #include "map.h"
 #include <stdbool.h>
 
-coordinate startingCoordinate = {0, 0, 0, 0, 0, 1};
-coordinate endingCoordinate = {4, 0, 0, 0, 0, 1};
+coordinate startingCoordinate = {0, 0, 0, 0, 3, 1};
+coordinate endingCoordinate = {0, 1, 0, 0, 0, 1};
 
 int main()
-{
+{   
     coordinate *fastestPath = NULL; //create array for fastest path
     coordinate *map = NULL;
+    coordinate *junctions = NULL; //create array for fastest path
     coordinate *unexploredCoordinates = NULL;
     //int totalLines = getTotalLines();
     int *sensorArray = getSensorArrayFromText();
     int finalSteps = 0; //variable to count the number of shortest steps
+    int index = 0;
+
     for (int i = 0;; i++)
     {
         // printf("I is %d",i);
@@ -22,16 +25,35 @@ int main()
             updateCoordinatePaths(map, sensorArray[0]);
         }
         else
-        {
+        {                
+            int steps1;
             // get size of Map
             int lastPosition = getTotalCoordinatesInMap(map);
             // Replicate a coordinate like the previous map
             coordinate c = replicateLastPosition(map);
             // Update current path
-            updateCoordinatePaths(&c, sensorArray[i]);
+            int junction = updateCoordinatePaths(&c, sensorArray[i]);
+            if (junction == 1){
+                 junctions[index++] = c;
+
+
+            //     for (int i = 1;; i++) //infinite for loop to count how many dots are there in the array (minus first one)
+            //     {
+            //         steps1++; //add steps
+            //         if (map[i].isLast == 1)//check if ending point
+            //         {
+            //             break; //end the loop
+            //         }
+            //     }
+
+            }
 
             // Update Orientation
             int location = getnextMove(&c, endingCoordinate); 
+
+
+
+
             //printf("Location: %d\n", location); ger
             // Update where the current coordinate is
             updateXYCoordinate(&map[lastPosition], &c);

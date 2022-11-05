@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct coordinate
+typedef struct edge
 {
     //X coordiante of the car ( 4 btyes )
     unsigned int x : 8;
@@ -34,4 +34,4 @@ coordinate makeCoordinate(int x , int y, int pathAvail, int pathUnexplored, int 
 
 void printCoordinate(coordinate c, int i);
 
-int updateCoordinatePaths(coordinate* c , int path);
+void updateCoordinatePaths(coordinate* c , int path);
