@@ -33,22 +33,11 @@ int main(){
                 // Unexplored
                 //Naomi's Code to go to the unexplored spot
                 //Add current coordinate to map if unexplored
-                map = updateCoordinateToMap(map, c);
+                map = updateCoordinateToMap(map, c);                
             }
-            else{ //Explored
-                //Check if in unexploredArray
-                int getUnexploredPosition = checkIfAlreadyInMap(unexploredCoordinates,c);
-                if(getUnexploredPosition != -1){
-                    unexploredCoordinates[getUnexploredPosition] = c;
-                }
-                
-            }
-            if(pathRemain != 0){
-                unexploredCoordinates = updateCoordinateToMap(unexploredCoordinates, map[lastPosition]);
-            }
-
         }
     }
     printMap(map);
+    printMap(unexploredCoordinates);
 
 }

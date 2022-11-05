@@ -24,6 +24,7 @@ typedef struct coordinate
     // 1 bit datatype
     // 1 = Last explored coordinate.
     unsigned int isLast : 1; // 1 bit
+    
 }coordinate;
 
 coordinate initStartingCoordinate();
