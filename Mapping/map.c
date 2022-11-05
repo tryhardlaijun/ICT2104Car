@@ -47,6 +47,29 @@ int getTotalCoordinatesInMap(coordinate* map){
     //Return -1 signal error.
     return -1;
 }
+int isMapFullyExplored(coordinate* map){
+    //Assume max amount of coordinate is 1000
+    for(int i = 0; i < MAX; i++){
+        //If last bit is true then return number
+        if (map[i].pathUnexplored != 0){
+            return i;
+        }
+        else if(map[i].isLast == 1){
+            return 0;
+        }
+    }
+    printf("EXCEED Size 1000 \n");
+    //Return -1 signal error.
+    return -1;
+}
+
+coordinate getPreviousCoordinate(coordinate* map, coordinate c ){
+    if(c.y == 0 && c.x == 0){
+        printf("Starting Point");
+        return c;
+    }
+
+}
 
 
 //Print all coordinate info from the map
@@ -65,7 +88,7 @@ coordinate replicateLastPosition(coordinate* map){
     return map[lastPosition];
 }
 
-// >= 0 Looped, -1 no need to reverse
+// >= 0 Looped, -1 not in loop
 int checkIfAlreadyInMap(coordinate* map , coordinate c){
     if(map == NULL){
         return -1;

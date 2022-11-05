@@ -1,9 +1,6 @@
 #include "map.h"
-
-
-int main(){
+coordinate * getMap(){
     coordinate* map = NULL;
-    coordinate* unexploredCoordinates = NULL;
     int totalLines = getTotalLines();
     int* sensorArray = getSensorArrayFromText();
     for(int i =0; i < totalLines; i++){
@@ -28,16 +25,34 @@ int main(){
             int pathRemain = updateUnexploredPath(&map[lastPosition]);
             // Check if next coordinate has already been explored
             int isExplored = checkIfAlreadyInMap(map , c);
-            //Check if map has been explored
+            //Check if map has been explored, -1 is not loop
             if(isExplored == -1){
                 // Unexplored
-                //Naomi's Code to go to the unexplored spot
                 //Add current coordinate to map if unexplored
                 map = updateCoordinateToMap(map, c);                
             }
+            else{
+                printCoordinate(map[isExplored]);
+                printCoordinate(c);
+                printf("Loop\n");
+            }
         }
     }
-    printMap(map);
-    printMap(unexploredCoordinates);
+    return map;
+}
 
+
+
+int main(){
+    coordinate * map = getMap();
+    printMap(map);
+    if(isMapFullyExplored(map) != -1){
+        int lastPosition = getTotalCoordinatesInMap(map);
+        // printf("\n\n");
+        // printCoordinate(map[lastPosition]);
+    }
+    else{
+        printf("Complete");
+    }
+    
 }
