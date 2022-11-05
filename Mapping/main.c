@@ -17,7 +17,6 @@ int main()
     int steps1 = 0;
     int shortestDistance = 1;
 
-
     for (int i = 0;; i++)
     {
         // printf("I is %d",i);
@@ -43,9 +42,9 @@ int main()
             // Update Unexplored Path for current path
             int pathRemain = updateUnexploredPath(&map[lastPosition]);
             // Check if next coordinate has already been explored
-            if (junction == 1){
+
+            if (junction == 1){ //if path unexplored is 3
                
-                
                 for (int i = 0;; i++) //infinite for loop to count how many dots are there in the array (minus first one)
                 {
                     steps1++; //add steps
@@ -54,18 +53,18 @@ int main()
                         break; //end the loop
                     }
                 }
-                printf("Current steps is %d \n", steps1);
+                printf("Current steps is %d \n", steps1); //print number of steps to reach junction
 
-                if (shortestDistance == 1)
+                if (shortestDistance == 1) //if no value
                 {
                     int size = sizeof(map) / sizeof(map[0]);
                     junctionMap = map[size - 1];
-                    shortestDistance = steps1; //set final steps    
+                    shortestDistance = steps1; //set shortest distance to steps  
                     printf("Shortest Distance is %d", shortestDistance);
                     printf("\nShortest Distance updated\n\n");
                 }
 
-                else if (steps1 < shortestDistance)
+                else if (steps1 < shortestDistance) //update shortest distance
                 {
                     int size = sizeof(map) / sizeof(map[0]);
                     junctionMap = map[size - 1];
