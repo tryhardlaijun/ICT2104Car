@@ -32,6 +32,6 @@ coordinate initEndingCoordinate();
 
 coordinate makeCoordinate(int x , int y, int pathAvail, int pathUnexplored, int nextOrientation, int isLast);
 
-void printCoordinate(coordinate c, int i);
+void printCoordinate(coordinate c);
 
 int updateCoordinatePaths(coordinate* c , int path);

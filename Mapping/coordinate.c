@@ -26,9 +26,9 @@ coordinate makeEndCoordinate(int x , int y, int pathAvail, int pathUnexplored, i
 
 
 // Print out Coordinate data
-void printCoordinate(coordinate c, int i){
-    printf("%d, x is %d\ty is %d\tpathAvail is %d\tpathUnexplored is %d\tNext orientation is %d\tisLast is %d\t\n"
-    ,i, c.x,c.y,c.pathAvail,
+void printCoordinate(coordinate c){
+    printf("x is %d\ty is %d\tpathAvail is %d\tpathUnexplored is %d\tNext orientation is %d\tisLast is %d\t\n"
+    ,c.x,c.y,c.pathAvail,
     c.pathUnexplored,c.nextOrientation,c.isLast);
 }
 // input the path into a coordinates unexplored and availalbe path.

@@ -81,7 +81,7 @@ int main()
                 steps1 = 0;
 
                 printf("\nThe current fastest junction:\n");
-                printCoordinate(map[i], 100);
+                printCoordinate(map[i]);
             }
 
             int isExplored = checkIfAlreadyInMap(map, c);

@@ -53,7 +53,7 @@ int getTotalCoordinatesInMap(coordinate* map){
 void printMap(coordinate* map){
     int count = getTotalCoordinatesInMap(map);
     for(int i = 1; i < count+1; i++){
-       printCoordinate(map[i], i);
+       printCoordinate(map[i]);
     }
 }
 
