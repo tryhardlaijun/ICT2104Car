@@ -8,12 +8,15 @@ int main()
 {   
     coordinate *fastestPath = NULL; //create array for fastest path
     coordinate *map = NULL;
-    coordinate *junctions = NULL; //create array for fastest path
+    coordinate junctionMap; //create array for fastest path
     coordinate *unexploredCoordinates = NULL;
     //int totalLines = getTotalLines();
     int *sensorArray = getSensorArrayFromText();
     int finalSteps = 0; //variable to count the number of shortest steps
     int index = 0;
+    int steps1 = 0;
+    int shortestDistance = 1;
+
 
     for (int i = 0;; i++)
     {
@@ -26,42 +29,61 @@ int main()
         }
         else
         {                
-            int steps1;
             // get size of Map
             int lastPosition = getTotalCoordinatesInMap(map);
             // Replicate a coordinate like the previous map
             coordinate c = replicateLastPosition(map);
             // Update current path
             int junction = updateCoordinatePaths(&c, sensorArray[i]);
-            if (junction == 1){
-                 junctions[index++] = c;
-
-
-            //     for (int i = 1;; i++) //infinite for loop to count how many dots are there in the array (minus first one)
-            //     {
-            //         steps1++; //add steps
-            //         if (map[i].isLast == 1)//check if ending point
-            //         {
-            //             break; //end the loop
-            //         }
-            //     }
-
-            }
-
             // Update Orientation
             int location = getnextMove(&c, endingCoordinate); 
-
-
-
-
             //printf("Location: %d\n", location); ger
             // Update where the current coordinate is
             updateXYCoordinate(&map[lastPosition], &c);
             // Update Unexplored Path for current path
             int pathRemain = updateUnexploredPath(&map[lastPosition]);
             // Check if next coordinate has already been explored
+            if (junction == 1){
+               
+                
+                for (int i = 0;; i++) //infinite for loop to count how many dots are there in the array (minus first one)
+                {
+                    steps1++; //add steps
+                    if (map[i].isLast == 1)//check if ending point
+                    {
+                        break; //end the loop
+                    }
+                }
+                printf("Current steps is %d \n", steps1);
+
+                if (shortestDistance == 1)
+                {
+                    shortestDistance = steps1; //set final steps    
+                    junctionMap = map[i];                 
+                    printf("Shortest Distance is %d", shortestDistance);
+                    printf("\nShortest Distance updated\n\n");
+                }
+
+                else if (steps1 < shortestDistance)
+                {
+                    shortestDistance = steps1;
+                    junctionMap = map[-1];
+                    printf("New shortest Distance is %d\n", shortestDistance);
+                    printf("Shortest Distance has changed\n\n");
+                }
+                else
+                {
+                    printf("Shortest Distance is %d\n", shortestDistance);
+                    printf("Shortest Distance no change\n\n");
+                }
+                steps1 = 0;
+
+                printf("\nThe current fastest junction:\n");
+                printCoordinate(map[i], 100);
+            }
+
             int isExplored = checkIfAlreadyInMap(map, c);
-            // Check if map has been explored
+                        // Check if map has been explored
             if (isExplored == -1)
             {
                 // Unexplored
@@ -125,8 +147,8 @@ int main()
                     printf("Final steps no change\n\n");
                 }
 
-                printf("\nThe current fastest path:\n");
-                printMap(fastestPath);
+                //printf("\nThe current fastest path:\n");
+                //printMap(fastestPath);
                 map = NULL;            
                 break;
             }
