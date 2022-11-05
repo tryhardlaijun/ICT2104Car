@@ -37,7 +37,7 @@ int updateCoordinatePaths(coordinate* c , int path){
     c->pathAvail = path;
     if (c->pathUnexplored == 3) //
     {
-        printf("\nCan turn right here    ");
+        //printf("\nCan turn right here    ");
         return 1;
     }
     else{

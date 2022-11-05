@@ -123,7 +123,7 @@ int updateXYCoordinate(coordinate *previousCoordinate, coordinate *currentCoordi
 }
 int getnextMove(coordinate *c, coordinate end)
 {
-    printCoordinate(*c, 1);
+    printCoordinate(*c, 0);
     if (c->x == end.x & c->y == end.y) //if hit finishing point
     {
         printf("Finish line!!\n");

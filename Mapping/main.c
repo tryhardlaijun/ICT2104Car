@@ -58,16 +58,19 @@ int main()
 
                 if (shortestDistance == 1)
                 {
+                    int size = sizeof(map) / sizeof(map[0]);
+                    junctionMap = map[size - 1];
                     shortestDistance = steps1; //set final steps    
-                    junctionMap = map[i];                 
                     printf("Shortest Distance is %d", shortestDistance);
                     printf("\nShortest Distance updated\n\n");
                 }
 
                 else if (steps1 < shortestDistance)
                 {
+                    int size = sizeof(map) / sizeof(map[0]);
+                    junctionMap = map[size - 1];
                     shortestDistance = steps1;
-                    junctionMap = map[-1];
+                    junctionMap = map[i];
                     printf("New shortest Distance is %d\n", shortestDistance);
                     printf("Shortest Distance has changed\n\n");
                 }
@@ -147,8 +150,8 @@ int main()
                     printf("Final steps no change\n\n");
                 }
 
-                //printf("\nThe current fastest path:\n");
-                //printMap(fastestPath);
+                printf("\nThe current fastest path:\n");
+                printMap(fastestPath);
                 map = NULL;            
                 break;
             }
