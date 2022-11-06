@@ -3,51 +3,84 @@ coordinate * getMap(){
     coordinate* map = NULL;
     int totalLines = getTotalLines();
     int* sensorArray = getSensorArrayFromText();
+    coordinate* previousCoordinate = NULL;
     for(int i =0; i < totalLines; i++){
         //If at the very beginning.
         if(map == NULL){
             map = updateCoordinateToMap(map, initStartingCoordinate());
             updateCoordinatePaths(map,sensorArray[0]);
-            getnextMove(map);
+            getNextMove(map);
+            previousCoordinate = map;
         }
         else{
             //get size of Map
             int lastPosition = getTotalCoordinatesInMap(map);
+
             //Replicate a coordinate like the previous map
-            coordinate c = replicateLastPosition(map);
+            coordinate *currentCoordinate = malloc(sizeof(coordinate));
+            replicateCoordinate(currentCoordinate,previousCoordinate);
+
             // Update current path
-            updateCoordinatePaths(&c , sensorArray[i]);
+            updateCoordinatePaths(currentCoordinate , sensorArray[i]);
+
             // Update Orientation
-            getnextMove(&c);
-            // Update where the current coordinate is
-            updateXYCoordinate(&map[lastPosition],&c);
+            getNextMove(currentCoordinate);
+
+            // Update self orientation
+            currentCoordinate -> selfOrientation = previousCoordinate -> nextOrientation;
+
+            // Assume car moed then Update where the current coordinate is
+            updateXYCoordinate(previousCoordinate,currentCoordinate);
+
             // Update Unexplored Path for current path
-            int pathRemain = updateUnexploredPath(&map[lastPosition]);
+            int pathRemain = updateUnexploredPath(previousCoordinate);
+
+
             // Check if next coordinate has already been explored
-            int isExplored = checkIfAlreadyInMap(map , c);
+            int isExplored = checkIfAlreadyInMap(map , *currentCoordinate);
+
             //Check if map has been explored, -1 is not loop
             if(isExplored == -1){
                 // Unexplored
                 //Add current coordinate to map if unexplored
-                map = updateCoordinateToMap(map, c);                
+                map = updateCoordinateToMap(map, *currentCoordinate);                
             }
             else{
-                printCoordinate(map[isExplored]);
-                printCoordinate(c);
+                printf("\n\n");
+                coordinate * loopCoordinate = findCoordinateBasedOnXY(map, currentCoordinate->x , currentCoordinate->y);
+                printCoordinate(*loopCoordinate);
+                printCoordinate(*previousCoordinate);
+                updateLoop(loopCoordinate,previousCoordinate);
                 printf("Loop\n");
             }
+            //Update previous Coordinate.
+            previousCoordinate = currentCoordinate;
         }
     }
     return map;
 }
 
+void blackBoxUpdateLoop(){
+    coordinate loopCoordinate = {0,0,7,7,0,0,1};
+    coordinate previousCoordinate = {1,0,0,0,0,0,1};
+    
+    if(updateLoop(&loopCoordinate,&previousCoordinate)){
+        printf("PASS");
+    }
+    else{
+        printf("Fail");
+    }
+
+}
 
 
 int main(){
+    // blackBoxUpdateLoop();
     coordinate * map = getMap();
     printMap(map);
     if(isMapFullyExplored(map) != -1){
         int lastPosition = getTotalCoordinatesInMap(map);
+        // coordinate z = getPreviousCoordinate();
         // printf("\n\n");
         // printCoordinate(map[lastPosition]);
     }
