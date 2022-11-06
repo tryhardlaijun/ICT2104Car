@@ -52,49 +52,52 @@ int turnNextOrientationLeft(int nextOrientation){
     return nextOrientation;
 }
 
-//get movement according to original direction where the car is facing. 
-// 0 = Y+ || 1 = X+ || 2 = Y- || 3 = X-
-int getAbsoluteMovement(int coordinateOrientation , int nextMove){
-    //Previous Coordinate Turned Right.
-    if(nextMove == -1){
-        return turnNextOrientationLeft(coordinateOrientation);
-    }
-    //Previous Coordinate Turned Left.
-    else if(nextMove == 1){
-        return turnNextOrientationRight(coordinateOrientation);
-    }
-    // Previous Coordinate did not turn
-    else if (nextMove == 0)
-        return coordinateOrientation;
-    else
-        return -1;
-}
+//To Delete
+// //get movement according to original direction where the car is facing. 
+// // 0 = Y+ || 1 = X+ || 2 = Y- || 3 = X-
+// int getAbsoluteMovement(int coordinateOrientation , int nextMove){
+//     //Previous Coordinate Turned Right.
+//     if(nextMove == -1){
+//         return turnNextOrientationLeft(coordinateOrientation);
+//     }
+//     //Previous Coordinate Turned Left.
+//     else if(nextMove == 1){
+//         return turnNextOrientationRight(coordinateOrientation);
+//     }
+//     // Previous Coordinate did not turn
+//     else if (nextMove == 0)
+//         return coordinateOrientation;
+//     else
+//         return -1;
+// }
 int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordinate){
     // update coordinate by checking if the vehicle turned in the previous
     switch (previousCoordinate->nextOrientation)
     {
         //Increment Y coordinate relative to the previous
         case YPlus:
-            currentCoordinate->y = (previousCoordinate->y) + 1;
+            currentCoordinate->y = (currentCoordinate->y) + 1;
             break;
         //Increment x coordinate relative to the previous
         case XPlus:
-            currentCoordinate->x = (previousCoordinate->x) + 1;
+            currentCoordinate->x = (currentCoordinate->x) + 1;
             break;
         //Decrement Y coordinate relative to the previous
         case YMinus:
-            currentCoordinate->y = previousCoordinate->y - 1;
+            currentCoordinate->y = currentCoordinate->y - 1;
             break;
         //Decrement X coordinate relative to the previous
         case XMinus:
-            currentCoordinate->x = previousCoordinate->x - 1;
+            currentCoordinate->x = currentCoordinate->x - 1;
             break;
         default:
             return -1;
     }
     return 1;
 }
-int getnextMove(coordinate* c){
+
+//Return direction.
+int getNextMove(coordinate* c){
     //remove all bits but the 2nd bit. (Check If front is open)
     if(c->pathUnexplored & 2){
         printf("Move Forward\n");
@@ -104,22 +107,22 @@ int getnextMove(coordinate* c){
     else if(c->pathUnexplored & 1){
         printf("Turn Right\n");
         //Update Orientation for the next coordinate
-        c->nextOrientation = turnNextOrientationRight(c->nextOrientation);
+        c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
         return RIGHT;
     }
     //remove all bits but the 3rd bit. (Check If left is open)
     else if(c->pathUnexplored & 4){
         printf("Turn Left\n");
         //Update Orientation for the next coordinate
-        c->nextOrientation = turnNextOrientationLeft(c->nextOrientation);
+        c->nextOrientation = turnNextOrientationLeft(c->selfOrientation);
         return LEFT;
     }
     // It is a dead end all bits are 0.
     else{
         printf("Explored Or Dead End\n");
         //Car would turn around by turning right twice
-        c->nextOrientation = turnNextOrientationRight(c->nextOrientation);
-        c->nextOrientation = turnNextOrientationRight(c->nextOrientation);
+        c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
+        c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
         return REVERSE;
     }
 }
