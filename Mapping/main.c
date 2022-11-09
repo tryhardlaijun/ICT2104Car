@@ -60,22 +60,8 @@ coordinate * getMap(){
     return map;
 }
 
-void blackBoxUpdateLoop(){
-    coordinate loopCoordinate = {0,0,7,7,0,0,1};
-    coordinate previousCoordinate = {1,0,0,0,0,0,1};
-    
-    if(updateLoop(&loopCoordinate,&previousCoordinate)){
-        printf("PASS");
-    }
-    else{
-        printf("Fail");
-    }
-
-}
-
 
 int main(){
-    // blackBoxUpdateLoop();
     coordinate * map = getMap();
     printMap(map);
     if(isMapFullyExplored(map) != -1){

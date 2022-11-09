@@ -64,7 +64,7 @@ int isMapFullyExplored(coordinate* map){
     return -1;
 }
 
-coordinate getPreviousCoordinate(coordinate *map , coordinate c){
+coordinate getPreviousCoordinate(coordinate c){
     if(c.y == 0 && c.x == 0){
         printf("Starting Point");
         return c;
