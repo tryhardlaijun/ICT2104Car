@@ -5,9 +5,9 @@
 
 typedef struct coordinate
 {
-    //X coordiante of the car ( 4 btyes )
+    //X coordiante of the car ( 4 btyes ) // highest +-127
     int x : 8;
-    //Y coordiante of the car ( 4 btyes )
+    //Y coordiante of the car ( 4 btyes ) // highest +-127
     int y : 8;
     // 3 bit datatype
     //Path available following relative to where the car is facing. 
@@ -28,7 +28,7 @@ typedef struct coordinate
     unsigned int isLast : 1; // 1 bit
 
     
-}coordinate;
+}coordinate; // 27 bits total.
 
 coordinate initStartingCoordinate();
 

@@ -18,7 +18,7 @@ coordinate* initMap();
 
 int isMapFullyExplored(coordinate* map);
 
-coordinate getPreviousCoordinate(coordinate * map ,coordinate c);
+coordinate getPreviousCoordinate(coordinate c);
 
 
 //Return null is not found. Return address of the coordinate found.
