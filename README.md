@@ -23,6 +23,5 @@ The system reads a .txt file consisting of the possible paths that it can take. 
 
 
 
-<br><img width="500" alt="Map" src="https://user-images.githubusercontent.com/49942089/201333079-143e2dff-2367-4204-8759-0fce16fd038f.png"><br>
 
 
