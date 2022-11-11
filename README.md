@@ -1,4 +1,7 @@
 # ICT2104 Mapping
+# Process of Program
+<br>At the start of the program, it checks if the map is initialized. If not, initialize it. Next, it finds out where the car currently is on the map. It checks the next available path and then moves. It then checks if the next coordinate has been explored. This process repeats until the program detects that the map has been fully explored. 
+
 # Current Capabilities
 The system reads a .txt file consisting of the possible paths that it can take. The possible paths are stored with 3 bits.
 <br>First bit 1 - Moving left is possible
