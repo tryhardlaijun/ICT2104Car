@@ -54,8 +54,7 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
     // this function will compute the max size of the map by finding the maximum and minimum values of x and y
     int maxOfX = 1, minOfX = 0, tempMaxOfX = 0, tempMinOfX = 0;
     int maxOfY = 1, minOfY = 0, tempMaxOfY = 0, tempMinOfY = 0;
-    int addedY = 0, addedX = 0;
-    int toAddIntoRight = 0, toAddIntoLeft = 0;
+    int addedY = 0, addedX = 0; // used for checking
     int totalCoordinates = getTotalCoordinatesInMap(map) + 1; // + 1 so that last coordinate is included in for loop
 
     for (int k = 0; k < totalCoordinates; k++)
@@ -86,31 +85,16 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
         }
         if (map[i].y == maxOfY)
         {
-            toAddIntoRight = 0;
-            toAddIntoLeft = 0;
-            if (nextOrientation != currentOrientation)
-            {
-                addedY = 0;
-            }
-            if (currentOrientation == 1)
-            {
-                // if car is at orientation 1 ( ----> )
-                // and y coordinate is at the max value
-                // then, the only way to check and add height to this map is if there is an available path on the left side of orientation 1
-                // if left path is available, we add one more row to the top of y
-                toAddIntoLeft = 1;
-            }
-            if (currentOrientation == 3)
-            {
-                toAddIntoRight = 1;
-            }
-
-            if (map[i].pathAvail & 1 && toAddIntoRight && addedY == 0)
+            // if car is at orientation 3 ( <----- )
+            // and y coordinate is at the max value
+            // then, the only way to check and add height to this map is if there is an available path on the right side of orientation 3
+            // if right path is available, we add one more row to the top of y
+            if (map[i].pathAvail & 1 && currentOrientation == 3 && addedY == 0)
             {
                 tempMaxOfY++;
                 addedY = 1;
             }
-            if (map[i].pathAvail & 4 && toAddIntoLeft && addedY == 0)
+            if (map[i].pathAvail & 4 && currentOrientation == 1 && addedY == 0)
             {
                 tempMaxOfY++;
                 addedY = 1;
@@ -119,35 +103,19 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
 
         if (map[i].x == maxOfX)
         {
-            toAddIntoRight = 0;
-            toAddIntoLeft = 0;
-
-            if (nextOrientation != currentOrientation)
-            {
-                addedX = 0;
-            }
-            if (currentOrientation == 0)
-            {
-                toAddIntoRight = 1; // in this orientation, should add X only if there's a pathAvail right
-            }
-            if (currentOrientation == 2)
-            {
-                toAddIntoLeft = 1; // in this orientation, should add X only if there's a pathAvail left
-            }
-
-            if (map[i].pathAvail & 4 && toAddIntoLeft && addedX == 0)
+            if (map[i].pathAvail & 4 && currentOrientation == 2 && addedX == 0)
             {
                 tempMaxOfX++;
                 addedX = 1;
             }
-            if (map[i].pathAvail & 1 && toAddIntoRight && addedX == 0)
+            if (map[i].pathAvail & 1 && currentOrientation == 0 && addedX == 0)
             {
                 tempMaxOfX++;
                 addedX = 1;
             }
         }
     }
-
+    // reset checking values
     addedY = 0;
     addedX = 0;
     for (int i = 0; i < totalCoordinates; i++)
@@ -160,27 +128,16 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
         }
         if (map[i].y == minOfY)
         {
-            toAddIntoRight = 0;
-            toAddIntoLeft = 0;
-            if (nextOrientation != currentOrientation)
-            {
-                addedY = 0;
-            }
-            if (currentOrientation == 1)
-            {
-                toAddIntoRight = 1;
-            }
-            if (currentOrientation == 3)
-            {
-                toAddIntoLeft = 1;
-            }
-
-            if (map[i].pathAvail & 4 && toAddIntoLeft && addedY == 0)
+            // if car is at orientation 3 ( <----- )
+            // and y coordinate is at the min value
+            // then, the only way to check and add height to this map is if there is an available path on the left side of orientation 3
+            // if left path is available, we add one more row to the bottom of y
+            if (map[i].pathAvail & 4 && currentOrientation == 3 && addedY == 0)
             {
                 tempMinOfY--;
                 addedY = 1;
             }
-            if (map[i].pathAvail & 1 && toAddIntoRight && addedY == 0)
+            if (map[i].pathAvail & 1 && currentOrientation == 1 && addedY == 0)
             {
                 tempMinOfY--;
                 addedY = 1;
@@ -189,27 +146,12 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
 
         if (map[i].x == minOfX)
         {
-            toAddIntoRight = 0;
-            toAddIntoLeft = 0;
-            if (nextOrientation != currentOrientation)
-            {
-                addedX = 0;
-            }
-            if (currentOrientation == 0)
-            { // if next orientation is 1 when y = minY
-                toAddIntoLeft = 1;
-            }
-            if (currentOrientation == 2)
-            { // if next orientation is 1 when y = minY
-                toAddIntoRight = 1;
-            }
-
-            if (map[i].pathAvail & 4 && toAddIntoLeft && addedX == 0 && map[i].x - 1 < tempMinOfX)
+            if (map[i].pathAvail & 4 && currentOrientation == 0 && addedX == 0)
             {
                 tempMinOfX--;
                 addedX = 1;
             }
-            if (map[i].pathAvail & 1 && toAddIntoRight && addedX == 0 && map[i].x - 1 < tempMinOfX)
+            if (map[i].pathAvail & 1 && currentOrientation == 2 && addedX == 0)
             {
                 tempMinOfX--;
                 addedX = 1;
@@ -230,12 +172,14 @@ void generateMap(coordinate *map)
     int arrayHeight = 0, arrayWidth = 0, startPositionY = 0, startPositionX = 0;
     computeSizeOfMap(map, &arrayHeight, &arrayWidth, &startPositionY, &startPositionX);
 
+    // add offset because of the borders
     int startPositionXOffset = 2, startPositionYOffset = 1;
 
     if (startPositionX != 0)
     {
         for (int i = 0; i < startPositionX; i++)
         {
+            // add 4 because of the borders, until start position is found
             startPositionXOffset += 4;
         }
     }
@@ -244,23 +188,27 @@ void generateMap(coordinate *map)
     {
         for (int i = 0; i < startPositionY; i++)
         {
+            // add 2 because of the borders, until start position is found
             startPositionYOffset += 2;
         }
     }
 
+    // to build empty map
     int gridHeight = gridBorderBuilder(arrayHeight, 0);
     int gridWidth = gridBorderBuilder(arrayWidth, 1);
 
-    char **stringList = (char **)malloc(gridHeight * sizeof(char *));
-    if (stringList == NULL)
+    // allocate memory for height of map
+    char **mapToPrint = (char **)malloc(gridHeight * sizeof(char *));
+    if (mapToPrint == NULL)
     {
         printf("die\n");
         exit(0);
     }
     for (int i = 0; i < gridHeight; i++)
     {
-        stringList[i] = (char *)malloc(gridWidth + 1);
-        if (stringList[i] == NULL)
+        // allocate memory for width of map
+        mapToPrint[i] = (char *)malloc(gridWidth + 1);
+        if (mapToPrint[i] == NULL)
         {
             printf("die\n");
             exit(0);
@@ -269,18 +217,19 @@ void generateMap(coordinate *map)
 
     for (int i = 0; i < gridHeight; i++)
     {
-        char *oo = stringList[i];
-        gridBuilder(stringList[i], i, arrayWidth);
-        int yu = 9;
+        // at each row of mapToPrint array, add borders around and inside map
+        gridBuilder(mapToPrint[i], i, arrayWidth);
     }
 
+    // just for printing an empty map
     printf("Empty Map\n");
     for (int i = gridHeight - 1; i >= 0; --i)
     {
-        printf("%s\n", stringList[i]);
+        printf("%s\n", mapToPrint[i]);
     }
     printf("\n\n");
 
+    // initialise values to add into mapToPrint that was created
     int totalCoordinatesMoved = getTotalCoordinatesInMap(map) + 1;
     int heightCounter = 0;
     int widthCounter = 0;
@@ -289,7 +238,7 @@ void generateMap(coordinate *map)
     int tempX;
     int tempYPrint0;
     int tempXPrint0;
-    // TODO: plus 1 for now cause last sensedData is a loop and not recorded in map Yet.
+    
     for (int i = 0; i < totalCoordinatesMoved; i++)
     {
         int nextOrientation = map[i].nextOrientation;
@@ -301,28 +250,29 @@ void generateMap(coordinate *map)
             {
                 tempY = tempY + 1; // TODO: use constant variable
                 // remove border in between
-                stringList[tempY][tempX] = ' ';
+                mapToPrint[tempY][tempX] = ' ';
             }
             else if (map[i].y < map[i - 1].y)
             {
                 tempY = tempY - 1; // TODO: use constant variable
                 // remove border in between
-                stringList[tempY][tempX] = ' ';
+                mapToPrint[tempY][tempX] = ' ';
             }
             else if (map[i].x > map[i - 1].x)
             {
                 tempX = tempX + 2; // TODO: use constant variable
                 // remove border in between
-                stringList[tempY][tempX] = ' ';
+                mapToPrint[tempY][tempX] = ' ';
             }
             else if (map[i].x < map[i - 1].x)
             {
                 tempX = tempX - 2; // TODO: use constant variable
                 // remove border in between
-                stringList[tempY][tempX] = ' ';
+                mapToPrint[tempY][tempX] = ' ';
             }
         }
 
+        // get current coordinate y with offset to fit into mapToPrint that has borders
         tempY = 0;
         if (i == 0)
             tempY = startPositionYOffset;
@@ -335,6 +285,7 @@ void generateMap(coordinate *map)
             tempY = startPositionYOffset + heightCounter;
         }
 
+        // get current coordinate y with offset to fit into mapToPrint that has borders
         tempX = 0;
         if (i == 0)
             tempX = startPositionXOffset;
@@ -348,11 +299,14 @@ void generateMap(coordinate *map)
                 widthCounter -= 4;
             tempX = startPositionXOffset + widthCounter;
         }
-        if (i == 0)
-            stringList[tempY][tempX] = 's'; // where the car moved
-        else
-            stringList[tempY][tempX] = '1'; // where the car moved
 
+        // set value in mapToPrint
+        if (i == 0)
+            mapToPrint[tempY][tempX] = 's'; // where the car moved
+        else
+            mapToPrint[tempY][tempX] = '1'; // where the car moved
+
+        // prepare to check for available path from where current coordinate is, based on orientation
         tempYPrint0 = tempY;
         tempXPrint0 = tempX;
         if (map[i].pathAvail & 4)
@@ -361,28 +315,28 @@ void generateMap(coordinate *map)
             if (nextOrientation == 0 || ((nextOrientation == 1 || nextOrientation == 3) && currentOrientation == 0)) // move to function
             {
                 tempXPrint0 = tempX - 4;                        // TODO: use constant variable
-                stringList[tempYPrint0][tempXPrint0 + 2] = ' '; // constant here is prev line constant / 2
+                mapToPrint[tempYPrint0][tempXPrint0 + 2] = ' '; // constant here is prev line constant / 2
             }
             else if (nextOrientation == 1 || ((nextOrientation == 0 || nextOrientation == 2) && currentOrientation == 1))
             {
                 tempYPrint0 = tempY + 2; // TODO: use constant variable
-                stringList[tempYPrint0 - 1][tempXPrint0] = ' ';
+                mapToPrint[tempYPrint0 - 1][tempXPrint0] = ' ';
             }
             else if (nextOrientation == 2 || ((nextOrientation == 1 || nextOrientation == 3) && currentOrientation == 2))
             {
                 tempXPrint0 = tempX + 4; // TODO: use constant variable
-                stringList[tempYPrint0][tempXPrint0 - 2] = ' ';
+                mapToPrint[tempYPrint0][tempXPrint0 - 2] = ' ';
             }
             else if (nextOrientation == 3 || ((nextOrientation == 0 || nextOrientation == 2) && currentOrientation == 3))
             {
                 tempYPrint0 = tempY - 2; // TODO: use constant variable
-                stringList[tempYPrint0 + 1][tempXPrint0] = ' ';
+                mapToPrint[tempYPrint0 + 1][tempXPrint0] = ' ';
             }
 
-            if (stringList[tempYPrint0][tempXPrint0] != 's' && stringList[tempYPrint0][tempXPrint0] != '1')
+            if (mapToPrint[tempYPrint0][tempXPrint0] != 's' && mapToPrint[tempYPrint0][tempXPrint0] != '1')
             {
 
-                stringList[tempYPrint0][tempXPrint0] = '0';
+                mapToPrint[tempYPrint0][tempXPrint0] = '0';
             }
         }
 
@@ -392,27 +346,27 @@ void generateMap(coordinate *map)
             if (nextOrientation == 0 || ((nextOrientation == 1 || nextOrientation == 3) && currentOrientation == 0))
             {
                 tempXPrint0 = tempX + 4; // TODO: use variable
-                stringList[tempYPrint0][tempXPrint0 - 2] = ' ';
+                mapToPrint[tempYPrint0][tempXPrint0 - 2] = ' ';
             }
             else if (nextOrientation == 1 || ((nextOrientation == 0 || nextOrientation == 2) && currentOrientation == 1))
             {
                 tempYPrint0 = tempY - 2; // TODO: use variable
-                stringList[tempYPrint0 + 1][tempXPrint0] = ' ';
+                mapToPrint[tempYPrint0 + 1][tempXPrint0] = ' ';
             }
             else if (nextOrientation == 2 || ((nextOrientation == 1 || nextOrientation == 3) && currentOrientation == 2))
             {
                 tempXPrint0 = tempX - 4; // TODO: use variable
-                stringList[tempYPrint0][tempXPrint0 + 2] = ' ';
+                mapToPrint[tempYPrint0][tempXPrint0 + 2] = ' ';
             }
             else if (nextOrientation == 3 || ((nextOrientation == 0 || nextOrientation == 2) && currentOrientation == 3))
             {
                 tempYPrint0 = tempY + 2; // TODO: use variable
-                stringList[tempYPrint0 - 1][tempXPrint0] = ' ';
+                mapToPrint[tempYPrint0 - 1][tempXPrint0] = ' ';
             }
-            if (stringList[tempYPrint0][tempXPrint0] != 's' && stringList[tempYPrint0][tempXPrint0] != '1')
+            if (mapToPrint[tempYPrint0][tempXPrint0] != 's' && mapToPrint[tempYPrint0][tempXPrint0] != '1')
             {
 
-                stringList[tempYPrint0][tempXPrint0] = '0';
+                mapToPrint[tempYPrint0][tempXPrint0] = '0';
             }
         }
     }
@@ -420,14 +374,14 @@ void generateMap(coordinate *map)
     printf("Traversed Map\n");
     for (int i = gridHeight - 1; i >= 0; --i)
     {
-        printf("%s\n", stringList[i]);
+        printf("%s\n", mapToPrint[i]);
     }
     printf("\n\n");
 
     // for (int i=0; i<gridHeight; i++) {
     //     free(stringList[i]);
     // }
-    free(stringList);
+    free(mapToPrint);
 }
 
 int main()
