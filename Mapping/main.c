@@ -29,11 +29,11 @@ coordinate *getMap()
             // Update current path
             updateCoordinatePaths(currentCoordinate, sensorArray[i]);
 
-            // Update Orientation
-            getNextMove(currentCoordinate);
-
             // Update self orientation
             currentCoordinate->selfOrientation = previousCoordinate->nextOrientation;
+
+            // Update Orientation
+            getNextMove(currentCoordinate);
 
             // Assume car moed then Update where the current coordinate is
             updateXYCoordinate(previousCoordinate, currentCoordinate);

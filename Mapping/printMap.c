@@ -53,8 +53,8 @@ char *gridBuilder(char *printExplored, int index, int arrayWidth)
 int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *startPositionY, int *startPositionX)
 {
     // this function will compute the max size of the map by finding the maximum and minimum values of x and y
-    int maxOfX = 1, minOfX = 0, tempMaxOfX = 0, tempMinOfX = 0;
-    int maxOfY = 1, minOfY = 0, tempMaxOfY = 0, tempMinOfY = 0;
+    int maxOfX = 0, minOfX = 0, tempMaxOfX = 0, tempMinOfX = 0;
+    int maxOfY = 0, minOfY = 0, tempMaxOfY = 0, tempMinOfY = 0;
     int addedY = 0, addedX = 0;                               // used for checking
     int totalCoordinates = getTotalCoordinatesInMap(map) + 1; // + 1 so that last coordinate is included in for loop
 
@@ -307,6 +307,14 @@ void generateMap(coordinate *map)
         else
             mapToPrint[tempY][tempX] = '1'; // where the car moved
 
+        // To delete
+        // printf("At each iteration, after adding 1 or s, print the map and see updated.\n");
+        // for (int i = gridHeight - 1; i >= 0; --i)
+        // {
+        //     printf("%s\n", mapToPrint[i]);
+        // }
+        // printf("\n\n");
+
         // prepare to check for available path from where current coordinate is, based on orientation
         tempYPrint0 = tempY;
         tempXPrint0 = tempX;
@@ -370,6 +378,14 @@ void generateMap(coordinate *map)
                 mapToPrint[tempYPrint0][tempXPrint0] = '0';
             }
         }
+
+        // To delete
+        // printf("At each iteration, after adding avail path, print the map and see updated. \n");
+        // for (int i = gridHeight - 1; i >= 0; --i)
+        // {
+        //     printf("%s\n", mapToPrint[i]);
+        // }
+        // printf("\n\n");
     }
 
     printf("Traversed Map\n");
