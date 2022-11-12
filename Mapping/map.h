@@ -1,8 +1,7 @@
 #pragma once 
 
-#include "map.h"
+#include "coordinate.h"
 #include "movement.h"
-
 
 coordinate* updateCoordinateToMap(coordinate* map, coordinate c);
 
@@ -29,4 +28,7 @@ int checkIfCoordinateMatch(coordinate a, coordinate b);
 
 
 //Update information if loop happens.
-int updateLoop(coordinate* mapCoordinate , coordinate* previousCoordinate);
+int updateLoop(coordinate* mapCoordinate , coordinate* currentCoordinate);
+
+//Copy map into another memory loc
+coordinate* copyMap(coordinate* src);
