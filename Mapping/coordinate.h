@@ -38,4 +38,4 @@ void printCoordinate(coordinate c);
 
 void updateCoordinatePaths(coordinate* c , int path);
 
-void replicateCoordinate(coordinate* previousCoordinate , coordinate* currentCoordinate);
+void replicateCoordinate(coordinate* currentCoordinate , coordinate* nextCoordinate);

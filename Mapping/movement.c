@@ -70,25 +70,25 @@ int turnNextOrientationLeft(int nextOrientation){
 //     else
 //         return -1;
 // }
-int updateXYCoordinate(coordinate* previousCoordinate, coordinate* currentCoordinate){
+int updateXYCoordinate(coordinate* currentCoordinate, coordinate* nextCoordinate){
     // update coordinate by checking if the vehicle turned in the previous
-    switch (previousCoordinate->nextOrientation)
+    switch (currentCoordinate->nextOrientation)
     {
         //Increment Y coordinate relative to the previous
         case YPlus:
-            currentCoordinate->y = (currentCoordinate->y) + 1;
+            nextCoordinate->y = (nextCoordinate->y) + 1;
             break;
         //Increment x coordinate relative to the previous
         case XPlus:
-            currentCoordinate->x = (currentCoordinate->x) + 1;
+            nextCoordinate->x = (nextCoordinate->x) + 1;
             break;
         //Decrement Y coordinate relative to the previous
         case YMinus:
-            currentCoordinate->y = currentCoordinate->y - 1;
+            nextCoordinate->y = nextCoordinate->y - 1;
             break;
         //Decrement X coordinate relative to the previous
         case XMinus:
-            currentCoordinate->x = currentCoordinate->x - 1;
+            nextCoordinate->x = nextCoordinate->x - 1;
             break;
         default:
             return -1;
