@@ -1,0 +1,2 @@
+C:\VSARM\armcc\102021~1.10\bin\ARM-NO~2.EXE qc libwjLai.a CMakeFiles/wjLai.dir/movement.c.obj CMakeFiles/wjLai.dir/map.c.obj CMakeFiles/wjLai.dir/file.c.obj CMakeFiles/wjLai.dir/coordinate.c.obj CMakeFiles/wjLai.dir/printMap.c.obj
+C:\VSARM\armcc\102021~1.10\bin\AR17F9~1.EXE libwjLai.a

@@ -13,6 +13,7 @@ add_library(
     map.c
     file.c
     coordinate.c
+    printMap.c
     sensedData.txt
 )
 # Tell CMake where to find the executable source file

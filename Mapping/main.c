@@ -1,4 +1,6 @@
 #include "map.h"
+#include "printMap.h"
+
 coordinate *getMap()
 {
     coordinate *map = NULL;
@@ -69,6 +71,7 @@ int main()
 {
     coordinate *map = getMap();
     printMap(map);
+    generateMap(map);
     if (isMapFullyExplored(map) != -1)
     {
         int lastPosition = getTotalCoordinatesInMap(map);
