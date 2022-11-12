@@ -22,7 +22,9 @@ The system reads a .txt file consisting of the possible paths that it can take. 
 <br>Examples of Output:
 <br><img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/201339360-8df05cff-acb4-492e-ac8b-e1fc568205f6.png">
 
-<br>The car is also able to detect loops and a dead end/explored point. If the car reaches a dead end/explored point, it will turn around by turning right twice. If the car reaches a loop, it will print "Loop".
+<br>The car is also able to detect loops and a dead end/explored point. If the car reaches a dead end/explored point, it will turn around by turning right twice. If the car reaches a loop, it will print "Loop". In the example output above, before the printing of "Loop", we grabbed where this looped coordinate is, together with the coordinate of where it came from.
+
+From here onwards, we will find the shortest path to the next available path that has not been explored by the car.
 
 
 
