@@ -1,12 +1,10 @@
 #include "map.h"
-#include "printMap.h"
-
-int main()
+coordinate *getMap()
 {
     coordinate *map = NULL;
-    coordinate *unexploredCoordinates = NULL;
     int totalLines = getTotalLines();
     int *sensorArray = getSensorArrayFromText();
+    coordinate *previousCoordinate = NULL;
     for (int i = 0; i < totalLines; i++)
     {
         // If at the very beginning.
@@ -14,53 +12,72 @@ int main()
         {
             map = updateCoordinateToMap(map, initStartingCoordinate());
             updateCoordinatePaths(map, sensorArray[0]);
-            getnextMove(map);
+            getNextMove(map);
+            previousCoordinate = map;
         }
         else
         {
             // get size of Map
             int lastPosition = getTotalCoordinatesInMap(map);
+
             // Replicate a coordinate like the previous map
-            coordinate c = replicateLastPosition(map);
+            coordinate *currentCoordinate = malloc(sizeof(coordinate));
+            replicateCoordinate(currentCoordinate, previousCoordinate);
+
             // Update current path
-            updateCoordinatePaths(&c, sensorArray[i]);
+            updateCoordinatePaths(currentCoordinate, sensorArray[i]);
+
             // Update Orientation
-            getnextMove(&c);
-            // Update where the current coordinate is
-            updateXYCoordinate(&map[lastPosition], &c);
-            // Update Unexplored Path for current path // zaf: previous
-            int pathRemain = updateUnexploredPath(&map[lastPosition]);
+            getNextMove(currentCoordinate);
+
+            // Update self orientation
+            currentCoordinate->selfOrientation = previousCoordinate->nextOrientation;
+
+            // Assume car moed then Update where the current coordinate is
+            updateXYCoordinate(previousCoordinate, currentCoordinate);
+
+            // Update Unexplored Path for current path
+            int pathRemain = updateUnexploredPath(previousCoordinate);
+
             // Check if next coordinate has already been explored
-            int isExplored = checkIfAlreadyInMap(map, c);
-            // Check if map has been explored
+            int isExplored = checkIfAlreadyInMap(map, *currentCoordinate);
+
+            // Check if map has been explored, -1 is not loop
             if (isExplored == -1)
             {
                 // Unexplored
-                // Naomi's Code to go to the unexplored spot
                 // Add current coordinate to map if unexplored
-                map = updateCoordinateToMap(map, c);
+                map = updateCoordinateToMap(map, *currentCoordinate);
             }
             else
-            { // Explored
-                // Check if in unexploredArray
-                int getUnexploredPosition = checkIfAlreadyInMap(unexploredCoordinates, c);
-                if (getUnexploredPosition != -1)
-                {
-                    unexploredCoordinates[getUnexploredPosition] = c;
-                }
+            {
+                printf("\n\n");
+                coordinate *loopCoordinate = findCoordinateBasedOnXY(map, currentCoordinate->x, currentCoordinate->y);
+                printCoordinate(*loopCoordinate);
+                printCoordinate(*previousCoordinate);
+                updateLoop(loopCoordinate, previousCoordinate);
+                printf("Loop\n");
             }
-            if (pathRemain != 0)
-            { // zaf: previous coordinate?
-                unexploredCoordinates = updateCoordinateToMap(unexploredCoordinates, map[lastPosition]);
-            }
+            // Update previous Coordinate.
+            previousCoordinate = currentCoordinate;
         }
     }
+    return map;
+}
 
-    printf("\n");
+int main()
+{
+    coordinate *map = getMap();
     printMap(map);
-    printf("\n");
-    printMap(unexploredCoordinates);
-    printf("\n");
-
-    generateMap(map);
+    if (isMapFullyExplored(map) != -1)
+    {
+        int lastPosition = getTotalCoordinatesInMap(map);
+        // coordinate z = getPreviousCoordinate();
+        // printf("\n\n");
+        // printCoordinate(map[lastPosition]);
+    }
+    else
+    {
+        printf("Complete");
+    }
 }
