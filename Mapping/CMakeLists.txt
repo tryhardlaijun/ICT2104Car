@@ -19,6 +19,7 @@ add_executable(${PROJECT_NAME}
     file.c
     map.c
     movement.c
+    printMap.c
 )
 
 # Create map/bin/hex/uf2 files
