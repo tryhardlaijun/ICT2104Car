@@ -100,6 +100,7 @@ int updateXYCoordinate(coordinate* currentCoordinate, coordinate* nextCoordinate
 int getNextMove(coordinate* c){
     //remove all bits but the 2nd bit. (Check If front is open)
     if(c->pathUnexplored & 2){
+        c->nextOrientation = (c->selfOrientation);
         printf("Move Forward\n");
         return FORWARD;
     }

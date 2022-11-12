@@ -73,8 +73,8 @@ coordinate getPreviousCoordinate(coordinate c){
     coordinate currentCoordinate = c;
     c.nextOrientation = c.selfOrientation;
     // Turn left twice to turn around.
-    c.nextOrientation = turnNextOrientationLeft(c.nextOrientation);
-    c.nextOrientation = turnNextOrientationLeft(c.nextOrientation);
+    c.nextOrientation = turnNextOrientationRight(c.nextOrientation);
+    c.nextOrientation = turnNextOrientationRight(c.nextOrientation);
     updateXYCoordinate(&c,&currentCoordinate);
     return currentCoordinate;
 }
