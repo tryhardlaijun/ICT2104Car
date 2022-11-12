@@ -26,7 +26,22 @@ The system reads a .txt file consisting of the possible paths that it can take. 
 
 From here onwards, we will find the shortest path to the next available path that has not been explored by the car.
 
+# Printing of the map
+We first start off by computing the size of the map, as this will be printed in a 2D array. By computing the size of the map, we can account for the borders that will be printed, as well as the initial starting position of the car.
+<br>The size of the map is computed based on the maximum of X and Y coordinates. This computation will also account for if there are available paths at this maximum values.
 
+<br>Next, we allocate memory and build out an empty map. The reason an empty map is built without initialising the explored coordinates first is to account for the offset of the starting position of the car.
+<br>
+
+<br>Example of empty map
+<br> {Put image here!}
+
+<br>Afterwards, we fill in the map with the coordinates taken from the previous section with an additional offset and add it into the map. 
+<br>The map prints **'s'** for the first coordinate, and subsequently prints **'1'** for where it explores. Where there is an available path, the map prints **'0'**. The map also removes the borders in between for where the car moves or where an available path is found.
+<br>Lastly, the completed map is printed, and deallocates memory.
+
+<br>Example of completed map
+<br> {Put image here!}
 
 
 
