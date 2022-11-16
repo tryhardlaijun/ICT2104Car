@@ -27,9 +27,6 @@ typedef struct coordinate
     // 1 = Last explored coordinate.
     unsigned int isLast : 1; // 1 bit
     unsigned int isReversible : 1;
-    
-
-    
 }coordinate; // 27 bits total.
 
 coordinate initStartingCoordinate();
