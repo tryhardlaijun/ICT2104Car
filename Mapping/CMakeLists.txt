@@ -14,7 +14,7 @@ add_library(
     file.c
     coordinate.c
     sensedData.txt
-    test.c
+    test.c      
 )
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME} 

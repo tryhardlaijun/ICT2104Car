@@ -8,9 +8,9 @@ int countAmountOfRightTurns(int origin , int compare);
 
 int changePathsByOrientationRight(int num);
 
-int orientationUpdatePath(int orientOrigin, int orientCompare, int origin);
+int orientationUpdatePath(int orientOrigin, int orientCompare, int origin, int isReversible);
 
 int findNumberOf1Bits(int num);
 
-void test(coordinate* map);
+coordinate* findShortestPathInMap(coordinate* map , coordinate start);
 

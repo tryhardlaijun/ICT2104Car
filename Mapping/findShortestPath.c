@@ -1,18 +1,11 @@
-#include "findShortestPath.h"
+#include "map.h"
+#include "LinkedListPaths.h"
+#include "coordinate.h"
 
 
-int countAmountOfRightTurns(int origin , int compare){
-    int count = 0;
-    while(origin != compare){
-        origin = turnNextOrientationRight(origin);
-        count++;
-    }
-    return count;
-}
-
-int changePathsByOrientationRight(int num){
-    if(num & 4){
-        num -= 4;
+int bitShift4Left(int num){
+    if(num & 8){
+        num -= 8;
         num = num << 1;
         num += 1;
     }
@@ -21,22 +14,41 @@ int changePathsByOrientationRight(int num){
     }
     return num;
 }
-
-int orientationUpdatePath(int orientOrigin, int orientCompare, int origin){
-    if (origin == 7)
-        return 7;
-    int x = countAmountOfRightTurns(orientOrigin, orientCompare);
-    if(x > 0){
-        // Reset bit from start for count
-        origin &= ~(1 << (3 - x));
+int bitShift4Right(int num){
+    if(num & 1){
+        num -= 1;
+        num = num >> 1;
+        num += 8;
     }
-    for(int i = 0; i < x-1; i++){
-        origin = changePathsByOrientationRight(origin);
+    else{
+        num = num >> 1;
     }
-    if(x > 0){
-    // Set origin, original bit
-        origin |= (1 << (x-1));
+    return num;
+}
+// Update the orientation according to the origin Orientation and origin paths.
+int orientationUpdatePath(int orientOrigin, int orientCompare, int origin, int isRevisible){
+    origin = origin << 1;
+    origin+= isRevisible;
+    // Turn left if origin is bigger
+    while(orientOrigin != orientCompare)
+    if(orientOrigin == 3 && orientCompare == 0){
+        orientOrigin = turnNextOrientationLeft(orientOrigin);
+        origin = bitShift4Right(origin);
     }
+    else if(orientOrigin == 0 && orientCompare == 3){
+        orientOrigin = turnNextOrientationRight(orientOrigin);
+        origin = bitShift4Left(origin);
+    }
+    else if(orientOrigin > orientCompare){
+        orientOrigin = turnNextOrientationLeft(orientOrigin);
+        origin = bitShift4Right(origin);
+    }
+    else{
+        orientOrigin = turnNextOrientationRight(orientOrigin);
+        origin = bitShift4Left(origin);
+    }
+    origin -= isRevisible;
+    origin = origin >> 1;
     return origin;
 }
 
@@ -53,11 +65,17 @@ coordinate* updateMiniMap(coordinate* mainMap, coordinate* pathMap){
     //Update Orientaition
     nextCoordinate->selfOrientation = currCoordinate->nextOrientation;
     // Update Coordinate5
-    updateXYCoordinate(currCoordinate,nextCoordinate);
+    updateXYCoordinate(nextCoordinate);
     // Update Explored Path
     updateUnexploredPath(currCoordinate);
-    *nextCoordinate = *(findCoordinateBasedOnXY(mainMap, nextCoordinate->x,nextCoordinate->y));
-    nextCoordinate->pathAvail = orientationUpdatePath(nextCoordinate->selfOrientation,currCoordinate->nextOrientation, nextCoordinate->pathAvail);
+    coordinate *x = (findCoordinateBasedOnXY(mainMap, nextCoordinate->x,nextCoordinate->y));
+    // if(x == NULL){
+    //     free(nextCoordinate);
+    //     return NULL;
+    // }
+    *nextCoordinate = *x;
+    nextCoordinate->pathAvail = orientationUpdatePath(nextCoordinate->selfOrientation,currCoordinate->nextOrientation,
+     nextCoordinate->pathAvail, nextCoordinate->isReversible);
     nextCoordinate->selfOrientation = currCoordinate->nextOrientation;
     return nextCoordinate;
 }
@@ -75,58 +93,91 @@ int findNumberOf1Bits(int num){
 }
 
 
-coordinate* findShortestPath(coordinate* map){
+coordinate* findShortestPathInMap(coordinate* map , coordinate start){
     // Setup linked List
     Node *head = NULL;
     // Setup number of paths
     int numberOfPaths = 1;
+    // setup starting points
     coordinate * c =(coordinate *) malloc(sizeof(coordinate));
-    coordinate start = map[0];
-    start.isLast = 1;
+    // Set up shortPath 
     coordinate* shortestPath = NULL;
+    // Set isLast bit.
+    start.isLast = 1;
     *c = start;
     c->pathUnexplored = c->pathAvail;
     insertAtEnd(&head,0, c);
-    if(head->data[0].x == 0 && head->data[0].y == 0){
-        // printf("Starting Point\n");
+    // If not starting path, then add the reversed path of the bot into it.
+    if(head->data[0].isReversible){
+        // Take the nextious bits
+        coordinate * previous = malloc(sizeof(coordinate));
+        replicateCoordinate(c,previous);
+        previous->selfOrientation = turnNextOrientationRight(previous->selfOrientation);
+        previous->selfOrientation = turnNextOrientationRight(previous->selfOrientation);
+        // *previous = *(findCoordinateBasedOnXY(map, previous->x,previous->y));
+        // previous->isLast = 1;
+        insertAtEnd(&head,numberOfPaths, previous);
+        printLinkedlist(head);
+        numberOfPaths++;
+
     }
     else{
-        insertAtEnd(&head,numberOfPaths, c);
-        numberOfPaths++;
+        printf("Not Reverisble\n");
     }
     int isDone = 1;
+    //Loop until it finds an path with available p
     while(isDone){
+        // Move forward for every path avail.
         for(int i = 0; i < numberOfPaths; i++){
+            // Find the first node.
             Node* node = search(head,i);
-
+            // Get last position of the map
             int lastPosition = getTotalCoordinatesInMap(node->data);
+            // Find out the number of bis
             int numberOf1Bits = findNumberOf1Bits(node->data[lastPosition-1].pathUnexplored);
+            // If not all path explored
             if(numberOf1Bits != 0){
+                // Update lastCoordinate in the node's Map with the main map and give out nextCoordinate.
                 coordinate* nextCoordinate = updateMiniMap(map,node->data);
-                // if(nextCoordinate == NULL){
-
-                // }
+                if(nextCoordinate == NULL){
+                    return NULL;
+                }
+                // Check if the number of bits exceeds 1.
                 if(numberOf1Bits > 1){
+                    // Make another copy of the map via mallocs
                     coordinate* mapCopy = copyMap(node->data);
+                    // Add a new node in the linked list
                     insertAtEnd(&head,numberOfPaths, mapCopy);
+                    // Increase number of paths
                     numberOfPaths++;
                 }
+                // If reached a coordinate which is not 0 -> Found unexplored Coordinate.
                 if(nextCoordinate->pathUnexplored != 0){
                     printf("DONE\n");
+                    // Ensure While Loop is completes
                     isDone = 0;
+                    // Setup temp var to free malloc-ed coordinate
                     coordinate tmp = *nextCoordinate;
+                    // Add coordinate into map.
                     updateCoordinateToMap(node->data, tmp);
+                    // Copy into shortestPath.
                     shortestPath = copyMap(node->data);
+                    // Free coordinate.
                     free(nextCoordinate);
                     break;
                 }
+                // If all paths of coordinate explored, reset its path available.
                 nextCoordinate->pathUnexplored = nextCoordinate->pathAvail;
+                // Setup temp var to free malloc-ed coordinate
                 coordinate tmp = *nextCoordinate;
+                // Add coordinate into map.
                 updateCoordinateToMap(node->data, tmp);
+                // Free coordinate.
                 free(nextCoordinate);
                 
             }
         }
+        // Free all memory in linked list.
         printLinkedlist(head);
     }
     freeList(head);

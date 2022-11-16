@@ -35,12 +35,13 @@ void freeList( Node* head)
 Node* search(Node* head, int id)
 {
     Node* current = head; // Initialize current
-    while (current != NULL) {
-        if (current->id == id)
-            return current;
-        current = current->next;
+    for(int i = 0; i < id; i++){
+      if(current == NULL){
+        return NULL;
+      }
+      current = current->next;
     }
-    return NULL;
+    return current;
 }
 
 
