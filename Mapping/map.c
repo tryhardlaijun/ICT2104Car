@@ -70,13 +70,12 @@ coordinate getPreviousCoordinate(coordinate c){
         printf("Starting Point");
         return c;
     }
-    coordinate currentCoordinate = c;
-    c.nextOrientation = c.selfOrientation;
     // Turn left twice to turn around.
-    c.nextOrientation = turnNextOrientationRight(c.nextOrientation);
-    c.nextOrientation = turnNextOrientationRight(c.nextOrientation);
-    updateXYCoordinate(&c,&currentCoordinate);
-    return currentCoordinate;
+    c.selfOrientation = turnNextOrientationRight(c.selfOrientation);
+    c.selfOrientation = turnNextOrientationRight(c.selfOrientation);
+    // c.selfOrientation = 3;
+    updateXYCoordinate(&c);
+    return c;
 }
 
 coordinate* findCoordinateBasedOnXY(coordinate * map ,int x , int y){
@@ -103,7 +102,7 @@ coordinate replicateLastPosition(coordinate* map){
     return map[lastPosition-1];
 }
 
-// >= 0 Looped, -1 not in loop
+// return array index of the looped coordinate , -1 not in loop
 int checkIfAlreadyInMap(coordinate* map , coordinate c){
     if(map == NULL){
         return -1;
@@ -119,23 +118,8 @@ int checkIfAlreadyInMap(coordinate* map , coordinate c){
     return -1;
 }
 
-
-void replicateCoordinate(coordinate* src , coordinate* dest){
-    src -> isLast = dest -> isLast;
-    src -> nextOrientation = dest -> nextOrientation;
-    src -> pathAvail = dest -> pathAvail;
-    src -> pathUnexplored = dest -> pathUnexplored;
-    src -> selfOrientation = dest -> selfOrientation;
-    src -> x = dest -> x;
-    src -> y = dest -> y;
-}
-
-int checkIfCoordinateMatch(coordinate a, coordinate b){
-    return (a.x == b.x && a.y == b.y);
-}
-
 //Check if loop is in pathUnexplored.
-int updateLoop(coordinate* mapCoordinate , coordinate* currentCoordinate){
+int updateLoop(coordinate* mapCoordinate , coordinate* prevCoordinate){
     coordinate c = *mapCoordinate;
     //Initiate Count
     int count = 0;
@@ -143,9 +127,10 @@ int updateLoop(coordinate* mapCoordinate , coordinate* currentCoordinate){
     int unexploredTemp = 0;
     while(c.pathUnexplored > 0){
         getNextMove(&c);
+        c.selfOrientation = c.nextOrientation;
         updateUnexploredPath(&c);
-        updateXYCoordinate(&c,&c);
-        if(checkIfCoordinateMatch(c, *currentCoordinate)){
+        updateXYCoordinate(&c);
+        if(checkIfCoordinateMatch(c, *prevCoordinate)){
             
             mapCoordinate->pathUnexplored = c.pathUnexplored;
             return 1;

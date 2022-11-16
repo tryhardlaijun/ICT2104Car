@@ -14,7 +14,7 @@ int turnNextOrientationLeft(int nextOrientation);
 //To Delete
 // int getAbsoluteMovement(int coordinateOrientation , int nextMove);
 
-int updateXYCoordinate(coordinate* currentCoordinate, coordinate* nextCoordinate);
+int updateXYCoordinate(coordinate* currentCoordinate);
 
 int getNextMove(coordinate* c);
 
