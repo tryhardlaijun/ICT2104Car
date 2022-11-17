@@ -75,28 +75,31 @@ int turnNextOrientationLeft(int nextOrientation)
     return nextOrientation;
 }
 
-// To Delete
-//  //get movement according to original direction where the car is facing.
-//  // 0 = Y+ || 1 = X+ || 2 = Y- || 3 = X-
-//  int getAbsoluteMovement(int coordinateOrientation , int nextMove){
-//      //Previous Coordinate Turned Right.
-//      if(nextMove == -1){
-//          return turnNextOrientationLeft(coordinateOrientation);
-//      }
-//      //Previous Coordinate Turned Left.
-//      else if(nextMove == 1){
-//          return turnNextOrientationRight(coordinateOrientation);
-//      }
-//      // Previous Coordinate did not turn
-//      else if (nextMove == 0)
-//          return coordinateOrientation;
-//      else
-//          return -1;
-//  }
-int updateXYCoordinate(coordinate *previousCoordinate, coordinate *currentCoordinate)
-{
+//To Delete
+// //get movement according to original direction where the car is facing. 
+// // 0 = Y+ || 1 = X+ || 2 = Y- || 3 = X-
+// int getAbsoluteMovement(int coordinateOrientation , int nextMove){
+//     //Previous Coordinate Turned Right.
+//     if(nextMove == -1){
+//         return turnNextOrientationLeft(coordinateOrientation);
+//     }
+//     //Previous Coordinate Turned Left.
+//     else if(nextMove == 1){
+//         return turnNextOrientationRight(coordinateOrientation);
+//     }
+//     // Previous Coordinate did not turn
+//     else if (nextMove == 0)
+//         return coordinateOrientation;
+//     else
+//         return -1;
+// }
+
+
+
+
+int updateXYCoordinate(coordinate* currentCoordinate){
     // update coordinate by checking if the vehicle turned in the previous
-    switch (previousCoordinate->nextOrientation)
+    switch (currentCoordinate->selfOrientation)
     {
     // Increment Y coordinate relative to the previous
     case YPlus:
@@ -120,12 +123,11 @@ int updateXYCoordinate(coordinate *previousCoordinate, coordinate *currentCoordi
     return 1;
 }
 
-// Return direction.
-int getNextMove(coordinate *c)
-{
-    // remove all bits but the 2nd bit. (Check If front is open)
-    if (c->pathUnexplored & 2)
-    {
+//Return direction.
+int getNextMove(coordinate* c){
+    //remove all bits but the 2nd bit. (Check If front is open)
+    if(c->pathUnexplored & 2){
+        c->nextOrientation = (c->selfOrientation);
         printf("Move Forward\n");
         return FORWARD;
     }

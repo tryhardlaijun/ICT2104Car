@@ -26,8 +26,8 @@ typedef struct coordinate
     // 1 bit datatype
     // 1 = Last explored coordinate.
     unsigned int isLast : 1; // 1 bit
-
-} coordinate; // 27 bits total.
+    unsigned int isReversible : 1;
+}coordinate; // 27 bits total.
 
 coordinate initStartingCoordinate();
 
@@ -37,4 +37,7 @@ void printCoordinate(coordinate c);
 
 void updateCoordinatePaths(coordinate *c, int path);
 
-void replicateCoordinate(coordinate *previousCoordinate, coordinate *currentCoordinate);
+void replicateCoordinate(coordinate* src , coordinate* dest);
+
+// 1 true, 0 false
+int checkIfCoordinateMatch(coordinate a, coordinate b);

@@ -3,7 +3,7 @@ import re
 headerText = "#pragma once \n\n"
 pattern = "^[a-z#].*"
 count = 0
-filename = "map"
+filename = "findShortestPath"
 x = 0
 with open(filename + ".c", encoding='utf8') as f:
     for line in f:
