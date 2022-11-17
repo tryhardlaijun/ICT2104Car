@@ -245,9 +245,6 @@ void generateMap(coordinate *map)
         int nextOrientation = map[i].nextOrientation;
         int currentOrientation = map[i].selfOrientation;
         // get previous tempX and tempY if not 0
-        if (i == 18){
-            int asd = 123;
-        }
         if (i != 0)
         {
             // tempY = (2*map[i].y)+1; //optimised version
@@ -306,8 +303,15 @@ void generateMap(coordinate *map)
         //     tempX = startPositionXOffset + widthCounter;
         // }
         
-        tempY = (2*map[i].y)+1; //optimised version
-        tempX = (4*map[i].x)+2;
+
+        if (i==0) {
+            tempY = startPositionYOffset;
+            tempX = startPositionXOffset;
+        } else {
+
+        tempY = (2*map[i].y)+1 + startPositionYOffset-1; //optimised version compared to commented out code ontop
+        tempX = (4*map[i].x)+2 + startPositionXOffset-2;
+        }
 
 
 
