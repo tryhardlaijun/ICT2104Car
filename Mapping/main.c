@@ -28,7 +28,7 @@ coordinate* getShortestPath(coordinate*  map,coordinate* currentCoordinate){
     return shortTestPath;
 }
 
-    int shortestPathFoundFlag = 0;
+    
 coordinate * exploreMap (coordinate* map, int sensedData, coordinate * currentCoordinate , coordinate * previousCoordinate, int* isLoopOrDeadEnd){
     //Replicate a coordinate like the previous map
     if(map == NULL){
@@ -45,11 +45,6 @@ coordinate * exploreMap (coordinate* map, int sensedData, coordinate * currentCo
         //Update path completed.
         coordinate * previous = findCoordinateBasedOnXY(map, currentCoordinate->x , currentCoordinate->y);
         updateUnexploredPath(previous);
-
-        if (shortestPathFoundFlag == 1) {
-            previous = previousCoordinate;
-        }
-        shortestPathFoundFlag = 0;
         // Assume car moved then Update where the current coordinate is
         updateXYCoordinate(currentCoordinate);
         // Update current path
@@ -83,7 +78,6 @@ coordinate * exploreMap (coordinate* map, int sensedData, coordinate * currentCo
                 coordinate *copiedMap = copyMap(map);
                 coordinate * tmp = findCoordinateBasedOnXY(copiedMap, currentCoordinate->x,currentCoordinate -> y);
                 currentCoordinate->isLast = 0;
-                shortestPathFoundFlag = 1;
                 *tmp = *currentCoordinate;
                 tmp->isLast = 0;
                 // updateXYCoordinate(currentCoordinate);
