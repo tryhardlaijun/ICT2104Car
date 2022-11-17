@@ -48,7 +48,7 @@ int getTotalCoordinatesInMap(coordinate* map){
     //Return -1 signal error.
     return -1;
 }
-
+//Return -1 is fully clear , >0 if not a cleared and -2 if over 1000 coordinates.
 int isMapFullyExplored(coordinate* map){
     //Assume max amount of coordinate is 1000
     for(int i = 0; i < MAX; i++){
@@ -57,12 +57,12 @@ int isMapFullyExplored(coordinate* map){
             return i;
         }
         else if(map[i].isLast == 1){
-            return 0;
+            return -1;
         }
     }
     printf("EXCEED Size 1000 \n");
     //Return -1 signal error.
-    return -1;
+    return -2;
 }
 
 coordinate getPreviousCoordinate(coordinate c){
@@ -140,8 +140,7 @@ int updateLoop(coordinate* mapCoordinate , coordinate* prevCoordinate){
             c = *mapCoordinate;
             c.pathUnexplored = unexploredTemp;
         }
-        count++;
-        
+        count++;  
     }
     return 0;
 }
@@ -155,3 +154,18 @@ coordinate* copyMap(coordinate* src){
     }
     return des;
 }
+
+// void freeMap(coordinate* map){
+    
+//     int lastPosition = getTotalCoordinatesInMap(map);
+//     for(int i = 0; i < lastPosition; i++){
+//         free(&map[13]);
+//     }
+// }
+
+ void reset(coordinate** myPointer) {
+     if (myPointer) {
+         free(*myPointer);
+         *myPointer = NULL;
+     }
+ }
