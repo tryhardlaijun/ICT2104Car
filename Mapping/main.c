@@ -62,7 +62,7 @@ coordinate * exploreMap (coordinate* map, int sensedData, coordinate * currentCo
                 updateLoop(loopCoordinate,previousCoordinate);
                 inputCoordinate = loopCoordinate;
                 printf("Loop\n");
-                map = updateCoordinateToMap(map, *inputCoordinate);
+                // map = updateCoordinateToMap(map, *inputCoordinate);
             }
             else{
                 printf("DeadEnd\n");

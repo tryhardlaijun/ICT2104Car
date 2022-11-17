@@ -319,7 +319,7 @@ void generateMap(coordinate *map)
         if (i == 0)
             mapToPrint[tempY][tempX] = 's'; // where the car moved
         else if (mapToPrint[tempY][tempX] != 's' && mapToPrint[tempY][tempX] != '1')
-            mapToPrint[tempY][tempX] = '1'; // where the car moved
+            mapToPrint[tempY][tempX] = ' '; // where the car moved
 
 
 
@@ -361,7 +361,7 @@ void generateMap(coordinate *map)
             if (mapToPrint[tempYPrint0][tempXPrint0] != 's' && mapToPrint[tempYPrint0][tempXPrint0] != '1')
             {
 
-                mapToPrint[tempYPrint0][tempXPrint0] = '0';
+                mapToPrint[tempYPrint0][tempXPrint0] = ' ';
             }
         }
 
@@ -391,7 +391,7 @@ void generateMap(coordinate *map)
             if (mapToPrint[tempYPrint0][tempXPrint0] != 's' && mapToPrint[tempYPrint0][tempXPrint0] != '1')
             {
 
-                mapToPrint[tempYPrint0][tempXPrint0] = '0';
+                mapToPrint[tempYPrint0][tempXPrint0] = ' ';
             }
         }
 
