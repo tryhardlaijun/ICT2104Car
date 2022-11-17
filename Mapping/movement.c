@@ -74,7 +74,7 @@ int turnNextOrientationLeft(int nextOrientation){
 
 
 
-    int updateXYCoordinate(coordinate* currentCoordinate){
+int updateXYCoordinate(coordinate* currentCoordinate){
     // update coordinate by checking if the vehicle turned in the previous
     switch (currentCoordinate->selfOrientation)
     {

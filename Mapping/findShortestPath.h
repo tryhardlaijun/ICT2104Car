@@ -14,3 +14,4 @@ int findNumberOf1Bits(int num);
 
 coordinate* findShortestPathInMap(coordinate* map , coordinate start);
 
+int readShortestPath(int orientOrigin, int orientCompare);

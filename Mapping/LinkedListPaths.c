@@ -30,6 +30,7 @@ void freeList( Node* head)
        head = head->next;
        free(tmp);
     }
+    free(head);
 }
 
 Node* search(Node* head, int id)

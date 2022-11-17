@@ -51,6 +51,26 @@ int orientationUpdatePath(int orientOrigin, int orientCompare, int origin, int i
     origin = origin >> 1;
     return origin;
 }
+int readShortestPath(int orientOrigin, int orientCompare){
+    // Turn left if origin is bigger
+    if(orientOrigin == 3 && orientCompare == 0){
+        orientOrigin = turnNextOrientationLeft(orientOrigin);
+        printf("Turn Left\n");
+    }
+    else if(orientOrigin == 0 && orientCompare == 3){
+        orientOrigin = turnNextOrientationRight(orientOrigin);
+        printf("Turn Right\n");
+    }
+    else if(orientOrigin > orientCompare){
+        orientOrigin = turnNextOrientationLeft(orientOrigin);
+        printf("Turn Left\n");
+    }
+    else{
+        orientOrigin = turnNextOrientationRight(orientOrigin);
+        printf("Turn Right\n");
+    }
+    return orientOrigin;
+}
 
 
 coordinate* updateMiniMap(coordinate* mainMap, coordinate* pathMap){
@@ -68,14 +88,18 @@ coordinate* updateMiniMap(coordinate* mainMap, coordinate* pathMap){
     updateXYCoordinate(nextCoordinate);
     // Update Explored Path
     updateUnexploredPath(currCoordinate);
-    coordinate *x = (findCoordinateBasedOnXY(mainMap, nextCoordinate->x,nextCoordinate->y));
+    
+    *nextCoordinate = *(findCoordinateBasedOnXY(mainMap, nextCoordinate->x,nextCoordinate->y));
     // if(x == NULL){
     //     free(nextCoordinate);
     //     return NULL;
     // }
-    *nextCoordinate = *x;
     nextCoordinate->pathAvail = orientationUpdatePath(nextCoordinate->selfOrientation,currCoordinate->nextOrientation,
-     nextCoordinate->pathAvail, nextCoordinate->isReversible);
+    nextCoordinate->pathAvail, nextCoordinate->isReversible);
+
+    // nextCoordinate->pathUnexplored = orientationUpdatePath(nextCoordinate->selfOrientation,currCoordinate->nextOrientation,
+    // nextCoordinate->pathUnexplored, nextCoordinate->isReversible);
+
     nextCoordinate->selfOrientation = currCoordinate->nextOrientation;
     return nextCoordinate;
 }
@@ -102,9 +126,10 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
     coordinate * c =(coordinate *) malloc(sizeof(coordinate));
     // Set up shortPath 
     coordinate* shortestPath = NULL;
+    //Input coordinate sync with map
+    *c = *(findCoordinateBasedOnXY(map, start.x,start.y));
     // Set isLast bit.
-    start.isLast = 1;
-    *c = start;
+    c->isLast = 1;
     c->pathUnexplored = c->pathAvail;
     insertAtEnd(&head,0, c);
     // If not starting path, then add the reversed path of the bot into it.
@@ -114,6 +139,8 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
         replicateCoordinate(c,previous);
         previous->selfOrientation = turnNextOrientationRight(previous->selfOrientation);
         previous->selfOrientation = turnNextOrientationRight(previous->selfOrientation);
+        previous->pathAvail = 2;
+        previous->pathUnexplored = previous->pathAvail;
         // *previous = *(findCoordinateBasedOnXY(map, previous->x,previous->y));
         // previous->isLast = 1;
         insertAtEnd(&head,numberOfPaths, previous);
@@ -158,8 +185,13 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
                     isDone = 0;
                     // Setup temp var to free malloc-ed coordinate
                     coordinate tmp = *nextCoordinate;
+                    //Change unexplored path according to explored.
+                    tmp.pathUnexplored = orientationUpdatePath(tmp.selfOrientation,
+                    tmp.nextOrientation,tmp.pathUnexplored,0);
                     // Add coordinate into map.
-                    updateCoordinateToMap(node->data, tmp);
+                    // getNextMove(&tmp);
+                    node->data = updateCoordinateToMap(node->data, tmp);
+
                     // Copy into shortestPath.
                     shortestPath = copyMap(node->data);
                     // Free coordinate.
@@ -171,7 +203,7 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
                 // Setup temp var to free malloc-ed coordinate
                 coordinate tmp = *nextCoordinate;
                 // Add coordinate into map.
-                updateCoordinateToMap(node->data, tmp);
+                node->data = updateCoordinateToMap(node->data, tmp);
                 // Free coordinate.
                 free(nextCoordinate);
                 
@@ -185,4 +217,3 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
     printMap(shortestPath);
     return shortestPath;
 }
-

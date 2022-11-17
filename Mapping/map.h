@@ -27,3 +27,5 @@ int updateLoop(coordinate* mapCoordinate , coordinate* currentCoordinate);
 
 //Copy map into another memory loc
 coordinate* copyMap(coordinate* src);
+
+void reset(coordinate** myPointer);
