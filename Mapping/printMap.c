@@ -56,7 +56,7 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
     int maxOfX = 0, minOfX = 0, tempMaxOfX = 0, tempMinOfX = 0;
     int maxOfY = 0, minOfY = 0, tempMaxOfY = 0, tempMinOfY = 0;
     int addedY = 0, addedX = 0;                               // used for checking
-    int totalCoordinates = getTotalCoordinatesInMap(map) + 1; // + 1 so that last coordinate is included in for loop
+    int totalCoordinates = getTotalCoordinatesInMap(map); // + 1 so that last coordinate is included in for loop
 
     for (int k = 0; k < totalCoordinates; k++)
     {
@@ -79,7 +79,7 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
     for (int i = 0; i < totalCoordinates; i++)
     {
         int nextOrientation = map[i].nextOrientation;        // nextOrientation
-        int currentOrientation = map[i - 1].nextOrientation; // currentOrientation
+        int currentOrientation = map[i].selfOrientation; // currentOrientation
         if (i == 0)
         {
             currentOrientation = 0; // wherever the car is placed down, it should be at orientation 0
@@ -122,7 +122,7 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
     for (int i = 0; i < totalCoordinates; i++)
     {
         int nextOrientation = map[i].nextOrientation;
-        int currentOrientation = map[i - 1].nextOrientation;
+        int currentOrientation = map[i].selfOrientation;
         if (i == 0)
         {
             currentOrientation = 0;
@@ -223,15 +223,15 @@ void generateMap(coordinate *map)
     }
 
     // just for printing an empty map
-    printf("Empty Map\n");
-    for (int i = gridHeight - 1; i >= 0; --i)
-    {
-        printf("%s\n", mapToPrint[i]);
-    }
-    printf("\n\n");
+    // printf("Empty Map\n");
+    // for (int i = gridHeight - 1; i >= 0; --i)
+    // {
+    //     printf("%s\n", mapToPrint[i]);
+    // }
+    // printf("\n\n");
 
     // initialise values to add into mapToPrint that was created
-    int totalCoordinatesMoved = getTotalCoordinatesInMap(map) + 1;
+    int totalCoordinatesMoved = getTotalCoordinatesInMap(map);
     int heightCounter = 0;
     int widthCounter = 0;
 
@@ -243,29 +243,34 @@ void generateMap(coordinate *map)
     for (int i = 0; i < totalCoordinatesMoved; i++)
     {
         int nextOrientation = map[i].nextOrientation;
-        int currentOrientation = map[i - 1].nextOrientation;
+        int currentOrientation = map[i].selfOrientation;
         // get previous tempX and tempY if not 0
+        if (i == 18){
+            int asd = 123;
+        }
         if (i != 0)
         {
-            if (map[i].y > map[i - 1].y)
+            // tempY = (2*map[i].y)+1; //optimised version
+            // tempX = (4*map[i].x)+2; 
+            if (map[i].y > map[i - 1].y && (map[i].y == map[i-1].y+1))
             {
                 tempY = tempY + 1; // TODO: use constant variable
                 // remove border in between
                 mapToPrint[tempY][tempX] = ' ';
             }
-            else if (map[i].y < map[i - 1].y)
+            else if (map[i].y < map[i - 1].y && (map[i].y+1 == map[i-1].y))
             {
                 tempY = tempY - 1; // TODO: use constant variable
                 // remove border in between
                 mapToPrint[tempY][tempX] = ' ';
             }
-            else if (map[i].x > map[i - 1].x)
+            else if (map[i].x > map[i - 1].x && (map[i].x == map[i-1].x+1))
             {
                 tempX = tempX + 2; // TODO: use constant variable
                 // remove border in between
                 mapToPrint[tempY][tempX] = ' ';
             }
-            else if (map[i].x < map[i - 1].x)
+            else if (map[i].x < map[i - 1].x && (map[i].x+1 == map[i-1].x))
             {
                 tempX = tempX - 2; // TODO: use constant variable
                 // remove border in between
@@ -273,39 +278,46 @@ void generateMap(coordinate *map)
             }
         }
 
-        // get current coordinate y with offset to fit into mapToPrint that has borders
-        tempY = 0;
-        if (i == 0)
-            tempY = startPositionYOffset;
-        else
-        {
-            if (map[i].y > map[i - 1].y)
-                heightCounter += 2;
-            else if (map[i].y < map[i - 1].y)
-                heightCounter -= 2;
-            tempY = startPositionYOffset + heightCounter;
-        }
+        // // get current coordinate y with offset to fit into mapToPrint that has borders
+        // tempY = 0;
+        // if (i == 0)
+        //     tempY = startPositionYOffset;
+        // else
+        // {
+        //     if (map[i].y > map[i - 1].y && (map[i].y == map[i-1].y+1))
+        //         heightCounter += 2;
+        //     else if (map[i].y < map[i - 1].y && (map[i].y+1 == map[i-1].y))
+        //         heightCounter -= 2;
+        //     tempY = startPositionYOffset + heightCounter;
+        // }
 
-        // get current coordinate y with offset to fit into mapToPrint that has borders
-        tempX = 0;
-        if (i == 0)
-            tempX = startPositionXOffset;
-        else
-        {
-            if (map[i].x > map[i - 1].x)
-            {
-                widthCounter += 4;
-            }
-            else if (map[i].x < map[i - 1].x)
-                widthCounter -= 4;
-            tempX = startPositionXOffset + widthCounter;
-        }
+        // // get current coordinate y with offset to fit into mapToPrint that has borders
+        // tempX = 0;
+        // if (i == 0)
+        //     tempX = startPositionXOffset;
+        // else
+        // {
+        //     if (map[i].x > map[i - 1].x && (map[i].x == map[i-1].x+1))
+        //     {
+        //         widthCounter += 4;
+        //     }
+        //     else if (map[i].x < map[i - 1].x && (map[i].x+1 == map[i-1].x))
+        //         widthCounter -= 4;
+        //     tempX = startPositionXOffset + widthCounter;
+        // }
+        
+        tempY = (2*map[i].y)+1; //optimised version
+        tempX = (4*map[i].x)+2;
+
+
 
         // set value in mapToPrint
         if (i == 0)
             mapToPrint[tempY][tempX] = 's'; // where the car moved
-        else
+        else if (mapToPrint[tempY][tempX] != 's' && mapToPrint[tempY][tempX] != '1')
             mapToPrint[tempY][tempX] = '1'; // where the car moved
+
+
 
         // To delete
         // printf("At each iteration, after adding 1 or s, print the map and see updated.\n");

@@ -90,7 +90,11 @@ coordinate* findCoordinateBasedOnXY(coordinate * map ,int x , int y){
 void printMap(coordinate* map){
     int count = getTotalCoordinatesInMap(map);
     for(int i = 0; i < count; i++){
-       printCoordinate(map[i]);
+    //    printCoordinate(map[i]);
+    coordinate c = map[i];
+           printf("%d, x is %d\ty is %d\tpathAvail is %d\tpathUnexplored is %d\tNext orientation is %d\tSelf Orientation is %d\tisLast is %d\tIsReversible is %d\t\n"
+    ,i+1,c.x,c.y,c.pathAvail,
+    c.pathUnexplored,c.nextOrientation,c.selfOrientation,c.isLast,c.isReversible);
     }
 }
 

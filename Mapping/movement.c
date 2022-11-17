@@ -152,8 +152,12 @@ int getNextMove(coordinate* c){
     {
         printf("Explored Or Dead End\n");
         // Car would turn around by turning right twice
-        c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
-        c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
+        // zaf - shouldn't the orientation update like this
+        c->selfOrientation = turnNextOrientationRight(c->selfOrientation);
+        c->selfOrientation = turnNextOrientationRight(c->selfOrientation);
+        c->nextOrientation = c->selfOrientation;
+        // c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
+        // c->nextOrientation = turnNextOrientationRight(c->selfOrientation);
         return REVERSE;
     }
 }
