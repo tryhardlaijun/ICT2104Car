@@ -38,7 +38,7 @@ int updateXYCoordinate(coordinate* currentCoordinate, int movedDirection){
     return 1;
 }
 
-//Return direction.
+//Return direction. 0 = Forwred, 1 = Right, 2 = Reverse , 3 = LEfT
 int getNextMove(coordinate* c){
     //remove all bits but the 2nd bit. (Check If front is open)
     if(c->paths & (1<< FORWARD)){
@@ -57,7 +57,7 @@ int getNextMove(coordinate* c){
     }
     // It is a dead end all bits are 0.
     else if(c->paths & (1 << REVERSE)){
-        printf("Reverse\n");
+        printf("Backwards\n");
         //Car would turn around by turning right twice
         return REVERSE;
     }

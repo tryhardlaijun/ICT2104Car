@@ -14,3 +14,5 @@ int convertSensorDataToUnexploredPath(int num, int orientation);
 int turnNextOrientationLeft(int nextOrientation);
 
 int turnNextOrientationRight(int nextOrientation);
+
+int ChangeOrientation(int orientCar, int orientMovement);

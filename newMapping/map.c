@@ -112,8 +112,8 @@ int checkIfAlreadyInMap(coordinate* map , coordinate c){
 
 //Check if loop is in pathUnexplored. Return 1 for successfully uopdate, 0 for nothing updated.
 int updateLoop(coordinate* mapCoordinate , coordinate* prevCoordinate){
-    int xDifference = mapCoordinate->x - prevCoordinate->x;
-    int yDifference = mapCoordinate->y - prevCoordinate->y;
+    int xDifference = prevCoordinate->x -  mapCoordinate->x;
+    int yDifference = prevCoordinate->y -  mapCoordinate->y;
     if(xDifference == 1 && yDifference == 0){
         mapCoordinate->paths &= ~(1 << 1);
     }

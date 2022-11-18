@@ -29,7 +29,7 @@ int turnNextOrientationLeft(int nextOrientation){
 int convertSensorDataToUnexploredPath(int num, int orientation){
     // Shift 3rd bit to 4th.
     num |= (num & 4) << 1;
-    // Change bit to 3rd bit to 1.
+    // Change bit to 3rd bit to 0.
     num &= ~4;
     // Bit shift until the orientation hits 0.
     if(orientation >= 0 && orientation < 4){
@@ -115,23 +115,45 @@ void testDataConversion(){
 }
 
 
-void ChangeOrientation(int orientCar, int orientMovement){
+int ChangeOrientation(int orientCar, int orientMovement){
         while(orientCar != orientMovement){
             if(orientCar == 3 && orientMovement == 0){
-                orientCar = turnNextOrientationLeft(orientCar);
+                orientCar = turnNextOrientationRight(orientCar);
+                printf("The vehicle has to turn right.\n");
             }
             else if(orientCar == 0 && orientMovement == 3){
-                orientCar = turnNextOrientationRight(orientCar);
+                orientCar = turnNextOrientationLeft(orientCar);
+                printf("The vehicle has to turn Left.\n");
             }
             else if(orientCar > orientMovement){
                 orientCar = turnNextOrientationLeft(orientCar);
+                printf("The vehicle has to turn Left.\n");
             }
             else{
                 orientCar = turnNextOrientationRight(orientCar);
+                printf("The vehicle has to turn right.\n");
             }
         }
+        return orientMovement;
 }
 
+void testTurning(){
+    ChangeOrientation(1,3);
+    printf("\n");
+    ChangeOrientation(0,3);
+    printf("\n");
+    ChangeOrientation(3,0);
+    printf("\n");
+    ChangeOrientation(1,2);
+    printf("\n");
+    ChangeOrientation(1,3);
+    printf("\n");
+    ChangeOrientation(3,2);
+    printf("\n");
+}
+
+
+
 // int main(){
-//     testDataConversion();
+ 
 // }
