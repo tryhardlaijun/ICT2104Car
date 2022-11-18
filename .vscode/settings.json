@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "coordinate.h": "c",
+        "movement.h": "c",
+        "car.h": "c"
+    }
+}
