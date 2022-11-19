@@ -12,7 +12,7 @@ The system reads a sensorArray list consisting of the possible paths that it can
 <br>Each coordinate stores the following information:
 <br>X and Y values.
 <br>paths: A 8-bit value which combines two different information:
-<br>pathAvail: A 4-bit value determines the possible paths to be taken on the map. The bit order is as follows, Left, Back, Right, Up.
+<br>pathAvail: A 4-bit value determines the possible directions the car can go on the map. The bit order is as follows, Left, Back, Right, Up.
 <br>pathUnexplored: Similar to pathAvail, but once the possible path is taken, the bit is removed.
 <br>isLast: A 1-bit value which indicates whether the coordinate is the last visited one.
 
