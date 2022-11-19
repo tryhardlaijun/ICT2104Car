@@ -5,70 +5,112 @@
 #include "generateMap.h"
 #include "breatheFirstSearch.h"
 
+
+
+coordinate * senseCoordinateAndAddToMap (coordinate* map, car *Car, int sensedData, coordinate* carC){
+    int unexplorePath = convertSensorDataToUnexploredPath(sensedData,Car->orientation);
+    int availablePath = convertSensorDataToAvailPath(sensedData,Car->orientation);
+
+    // Update the sensor coordinate into the car.
+    updateCoordinatePaths(carC, unexplorePath + (availablePath << 4));
+    // Find out the next move.
+    if(map== NULL){
+        carC->paths &= ~(4 << 4);
+    }
+    //
+    int movement = getNextMove(carC);
+    if (movement != Car->orientation)
+    {
+        Car->orientation = ChangeOrientation(Car->orientation, movement);
+    }
+    // Update the unexploredPath.
+    updateUnexploredPath(carC, Car->orientation);
+    // Update map.
+    // Car moves Here
+    /*
+
+    */
+    // Updae the XY coordinate.
+    map = updateCoordinateToMap(map, *carC);
+    return map;
+}
+coordinate* exploreMap(coordinate* map, car* Car, int sensedData){
+    int loopPosition = -1;
+    coordinate* carC = &(Car->carCoordinate);
+    if (map != NULL)
+    {
+        // Temp variable for carC
+        coordinate tmp = *carC;
+        // If code reach here means it has already reach the location.
+        updateXYCoordinate(&tmp, Car->orientation);
+        // -1 if not looped
+        loopPosition = checkIfAlreadyInMap(map, tmp);
+        
+        if (loopPosition != -1 )
+        {
+            printf("LOOPED\n");
+            updateLoop(&map[loopPosition], carC);
+            // If fully explore return map
+            if(isMapFullyExplored(map) == -1){
+                printf("MAP FULLY EXPLORED");
+                return map;
+            }
+            coordinate * shortestPath = findShortestPathInMap(map,tmp);
+            test(shortestPath,Car);
+            coordinate *mapCoordinate = (findCoordinateBasedOnXY(map,carC->x,carC->y));
+            *carC = *mapCoordinate;
+            int movement = getNextMove(carC);
+            if (movement != Car->orientation)
+            {
+                Car->orientation = ChangeOrientation(Car->orientation, movement);
+            }
+            updateUnexploredPath(carC,Car->orientation);
+            *mapCoordinate = *carC;
+            reset(&shortestPath);
+        }
+        else{
+            *carC = tmp;
+        }
+
+    }
+
+    // If not looped and freshly init, then update data.
+    if(map != NULL && loopPosition != -1){
+
+    }
+    else{
+        map = senseCoordinateAndAddToMap(map,Car, sensedData, carC);
+    }
+    printCoordinate(*carC);
+    return map;
+}
+
+
 int main()
 {
     coordinate *map = NULL;
+    // init
     coordinate start = initStartingCoordinate();
     car Car = {start, 0};
-    int movement = 0;
+
     int sensorArray[]= {0b011,0b001,0b001,0b010, 0b011, 
                         0b011,0b001,0b010,0b001,0b011,
-                        0b001,0b001,0b010,0b001,0b001};
+                        0b001,0b001,0b010,0b001,0b001,
+                        0b100,0b000,0b001,0b010,0b001,
+                        0b001, 0b001,0b001,0b001};
     // int sensorArray[]= {0b001,0b001,0b001,0};
-    for (int i = 0; i < 15; i++){
-        coordinate* carC = &(Car.carCoordinate);
-        int loopPosition = -1;
-        if (map != NULL)
-        {
-            // Temp variable for carC
-            coordinate tmp = *carC;
-            // If code reach here means it has already reach the location.
-            updateXYCoordinate(&tmp, movement);
-            // -1 if not looped
-            loopPosition = checkIfAlreadyInMap(map, tmp);
-            if (loopPosition != -1)
-            {
-                printf("LOOPED\n");
-                updateLoop(&map[loopPosition], carC);
-            }
-            *carC = tmp;
+    for (int i = 0; i < 24; i++){
+        if(i == 17){
+            printf("g");
         }
-        if(map != NULL && loopPosition != -1){}
-        else{
-
-            int num1 = convertSensorDataToUnexploredPath(sensorArray[i],Car.orientation);
-            int num2 = convertSensorDataToAvailPath(sensorArray[i],Car.orientation);
-
-            // Update the sensor coordinate into the car.
-            updateCoordinateAvailablePaths(carC, num1 + (num2 << 4));
-            // Find out the next move.
-            if(map== NULL){
-                carC->paths &= ~(4 << 4);
-            }
-            //
-            movement = getNextMove(carC);
-            if (movement != Car.orientation)
-            {
-                Car.orientation = ChangeOrientation(Car.orientation, movement);
-            }
-            // Update the unexploredPath.
-            updateUnexploredPath(carC, movement);
-            // Update map.
-            // Car moves Here
-            /*
-
-            */
-            // Updae the XY coordinate.
-            map = updateCoordinateToMap(map, *carC);
-        }
-        printCoordinate(*carC);
+        map = exploreMap(map,&Car,sensorArray[i]);
     }
     
     printf("\n\n");
-    coordinate * shorttestPath = findShortestPathInMap(map,map[4]);
+    
     printf("\n\n");
     printMap(map);
-    reset(&shorttestPath);
+    
     reset(&map);
     // coordinate *testMap = getTestMap();
     // printMap(testMap);

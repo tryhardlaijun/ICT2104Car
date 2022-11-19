@@ -24,3 +24,5 @@ coordinate* copyMap(coordinate* src);
 void reset(coordinate** myPointer);
 
 void updateCoordinatePaths(coordinate *c, int path);
+
+int getOrientationFromTwoAdjacentCoordinate(coordinate* srcCoordinate , coordinate* destCoordinate);

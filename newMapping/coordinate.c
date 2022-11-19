@@ -29,7 +29,7 @@ void updateCoordinateUnexploredPaths(coordinate* c , int path){
     }
 
 }
-void updateCoordinateAvailablePaths(coordinate* c , int paths){
+void updateCoordinatePaths(coordinate* c , int paths){
     c -> paths = paths;
 }
 int checkIfCoordinateMatch(coordinate a, coordinate b){

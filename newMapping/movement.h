@@ -3,7 +3,7 @@
 #include "coordinate.h"
 
 enum movement{YPlus, XPlus, YMinus, XMinus};
-enum turns{FORWARD, RIGHT, REVERSE, LEFT};
+enum turns{NORTH, EAST, SOUTH, WEST};
 
 int updateUnexploredPath(coordinate* c, int bitPosition);
 
@@ -16,3 +16,5 @@ int updateXYCoordinate(coordinate* currentCoordinate, int movedDirection);
 int getNextMove(coordinate* c);
 
 void exploreNewCoordinate(coordinate*c,int movement);
+
+void motorMove(int input);

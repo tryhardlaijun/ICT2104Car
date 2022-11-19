@@ -110,10 +110,11 @@ int checkIfAlreadyInMap(coordinate* map , coordinate c){
     return -1;
 }
 
-
-int getOrientationFromTwoCoordinate(coordinate* mapCoordinate , coordinate* prevCoordinate){
-    int xDifference = prevCoordinate->x -  mapCoordinate->x;
-    int yDifference = prevCoordinate->y -  mapCoordinate->y;
+// Compare two ajacent coordinate and find out what orientation the car must be.
+int getOrientationFromTwoAdjacentCoordinate(coordinate* srcCoordinate , coordinate* destCoordinate){
+    int xDifference = destCoordinate->x -  srcCoordinate->x;
+    int yDifference = destCoordinate->y -  srcCoordinate->y;
+    
     if(xDifference == 1 && yDifference == 0){
         return 1;
     }
@@ -126,11 +127,15 @@ int getOrientationFromTwoCoordinate(coordinate* mapCoordinate , coordinate* prev
     else if (xDifference == 0 && yDifference == -1){
         return 2;
     }
+    else{
+        printf("NOT AJACENT COORDINATE\n");
+        return -1;
+    }
 }
 //Check if loop is in pathUnexplored. Return 1 for successfully uopdate, 0 for nothing updated.
-int updateLoop(coordinate* mapCoordinate , coordinate* prevCoordinate){
-    int inverseBit = getOrientationFromTwoCoordinate(mapCoordinate,prevCoordinate);
-    mapCoordinate->paths &= ~(1 << inverseBit);
+int updateLoop(coordinate* srcCoordinate , coordinate* destCoordinate){
+    int inverseBit = getOrientationFromTwoAdjacentCoordinate(srcCoordinate,destCoordinate);
+    srcCoordinate->paths &= ~(1 << inverseBit);
     return 1;
 }
 

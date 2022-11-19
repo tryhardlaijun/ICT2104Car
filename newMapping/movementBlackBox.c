@@ -40,7 +40,7 @@ void blackBoxTestForTurning(){
     x = turnNextOrientationLeft(x);
     printf("%d\n",x);
     x = turnNextOrientationLeft(x);
-    printf("%d END LEFT\n",x);
+    printf("%d END WEST\n",x);
 }
 void testUpdateCoordinate(){
     coordinate c = {0,0,((3 << 4) + 3),1};

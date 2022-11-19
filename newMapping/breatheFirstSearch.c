@@ -73,7 +73,9 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
             Node* node = search(head,i);
             // Get last position of the map
             int lastPosition = getTotalCoordinatesInMap(node->data);
-            int first4Bits = node->data[lastPosition-1].paths & 15;
+            // Get last Array Coordinate
+            coordinate lastCoordinate = node->data[lastPosition-1];
+            int first4Bits = lastCoordinate.paths & 15;
             // Find out the number of bis
             int numberOf1Bits = findNumberOf1Bits(first4Bits);
             // If not all path explored
@@ -111,10 +113,17 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
                 }
             }
         }
+
+        printf("\n\n");
         printLinkedlist(head);
-        printf("\n\n\n\n");
-        printMap(shortestPath);
+
+
+
     }
+    printf("Visted\n\n");
+    printMap(visted);
+    printf("Shortest \n");
+    printMap(shortestPath);
     reset(&visted);
     freeList(head);
     return shortestPath;

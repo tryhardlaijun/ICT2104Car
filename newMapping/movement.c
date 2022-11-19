@@ -1,7 +1,6 @@
-#include "coordinate.h"
+#include "movement.h"
 
-enum movement{YPlus, XPlus, YMinus, XMinus};
-enum turns{UPWARD, RIGHT, BACKWARD, LEFT};
+
 
 int updateUnexploredPath(coordinate* c, int bitPosition){
     if(bitPosition < 0 && bitPosition > 4)
@@ -14,6 +13,7 @@ int updateUnexploredPath(coordinate* c, int bitPosition){
 
 int updateXYCoordinate(coordinate* currentCoordinate, int movedDirection){
     // update coordinate by checking if the vehicle turned in the previous
+    printf("CAR MOVE\n");
     switch (movedDirection)
     {
         //Increment Y coordinate relative to the previous
@@ -38,32 +38,55 @@ int updateXYCoordinate(coordinate* currentCoordinate, int movedDirection){
     return 1;
 }
 
-//Return direction. 0 = Forwred, 1 = Right, 2 = BACKWARD , 3 = LEfT
+//Return direction. 0 = Forwred, 1 = Right, 2 = SOUTH , 3 = LEfT
 int getNextMove(coordinate* c){
+    int value = 0;
     //remove all bits but the 2nd bit. (Check If front is open)
-    if(c->paths & (1<< UPWARD)){
-        printf("Move UPWARD\n");
-        return UPWARD;
+    if(c->paths & (1<< NORTH)){
+        
+        value = NORTH;
     }
     //remove all bits but the 1st bit. (Check If right is open)
-    else if(c->paths & (1 << RIGHT)){
-        printf("Move Right\n");
-        return RIGHT;
+    else if(c->paths & (1 << EAST)){
+        
+        value = EAST;
     }
     //remove all bits but the 3rd bit. (Check If left is open)
-    else if(c->paths & (1 << LEFT)){
-        printf("MOVE Left\n");
-        return LEFT;
+    else if(c->paths & (1 << WEST)){
+        
+        value = WEST;
     }
     // It is a dead end all bits are 0.
-    else if(c->paths & (1 << BACKWARD)){
-        printf("Backwards\n");
+    else if(c->paths & (1 << SOUTH)){
+        
         //Car would turn around by turning right twice
-        return BACKWARD;
+        value = SOUTH;
     }
     else{
         // DONT MOVE.
-        printf("Don't Move\n");
-        return -1;
+        value = -1;
+    }
+    motorMove(value);
+    return value;
+}
+
+void motorMove(int input){
+    switch(input){
+        case NORTH:
+            printf("Move NORTH\n");
+            break;
+        case EAST:
+            printf("Move EAST\n");
+            break;
+        case WEST:
+            printf("MOVE WEST\n");
+            break;
+        case SOUTH:
+            printf("MOVE SOUTH\n");
+            break;
+        default:
+            printf("Don't Move\n");
+            break;
+
     }
 }

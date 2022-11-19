@@ -1,5 +1,6 @@
 #include "car.h"
 
+// Simualate turn left and update orienation
 int turnNextOrientationRight(int nextOrientation){
     // If Vehicle facing Left from origin, then reset to 0 to indicate it is back to origin
     if(nextOrientation == 3){
@@ -11,9 +12,9 @@ int turnNextOrientationRight(int nextOrientation){
     }
     return nextOrientation;
 }
-
+// Simualate turn left and update orienation
 int turnNextOrientationLeft(int nextOrientation){
-    //If Vehicle is at origin already, then update to 3 to signal it is facing LEFT
+    //If Vehicle is at origin already, then update to 3 to signal it is facing WEST
     if(nextOrientation == 0){
         nextOrientation = 3;
     }
@@ -23,9 +24,7 @@ int turnNextOrientationLeft(int nextOrientation){
     }
     return nextOrientation;
 }
-
-
-
+//Change sensed Data into Absolute data.
 int convertSensorDataToUnexploredPath(int num, int orientation){
     // Shift 3rd bit to 4th.
     num |= (num & 4) << 1;
@@ -48,6 +47,7 @@ int convertSensorDataToUnexploredPath(int num, int orientation){
     return num;
     
 }
+//Change sensed Data into Absolute data.
 int convertSensorDataToAvailPath(int num, int orientation){
     // Shift 3rd bit to 4th.
     num |= (num & 4) << 1;
@@ -69,6 +69,74 @@ int convertSensorDataToAvailPath(int num, int orientation){
     return num;
     
 }
+//update Car orientation. Insert Motor Code here
+int ChangeOrientation(int orientCar, int orientMovement){
+    if(orientMovement >= 0 && orientMovement <= 4){         
+         while(orientCar != orientMovement){
+            if(orientCar == 3 && orientMovement == 0){
+                orientCar = turnNextOrientationRight(orientCar);
+                printf("Motor Turn right.\n");
+            }
+            else if(orientCar == 0 && orientMovement == 3){
+                orientCar = turnNextOrientationLeft(orientCar);
+                printf("Motor Turn Left.\n");
+            }
+            else if(orientCar > orientMovement){
+                orientCar = turnNextOrientationLeft(orientCar);
+                printf("Motor Turn Left.\n");
+            }
+            else{
+                orientCar = turnNextOrientationRight(orientCar);
+                printf("Motor Turn right.\n");
+            }
+        }   
+       
+    }
+    else{
+        printf("DEAD END\n");
+    }
+    return orientMovement;
+}
+
+void modifyOrientation(car* Car){
+    int movement = getNextMove(&(Car->carCoordinate));
+    if (movement != Car->orientation)
+    {
+        Car->orientation = ChangeOrientation(Car->orientation, movement);
+    }
+}
+//
+void test(coordinate* path, car * Car){
+    int lastPosition = getTotalCoordinatesInMap(path);
+    for(int i = 0; i < lastPosition; i++){
+        // The orientation the car has to be to move.
+        int orientation = getOrientationFromTwoAdjacentCoordinate(&(Car->carCoordinate),&(path[i]));
+        if(!checkIfCoordinateMatch(path[i],Car->carCoordinate)){
+            
+            Car->orientation = ChangeOrientation(Car->orientation, orientation);
+            // MOTOR MOVEEE!!!
+            Car->carCoordinate.x = path[i].x;
+            Car->carCoordinate.y = path[i].y;
+            motorMove(orientation);
+        }
+    }
+
+}
+void testTurning(){
+    ChangeOrientation(1,3);
+    printf("\n");
+    ChangeOrientation(0,3);
+    printf("\n");
+    ChangeOrientation(3,0);
+    printf("\n");
+    ChangeOrientation(1,2);
+    printf("\n");
+    ChangeOrientation(1,3);
+    printf("\n");
+    ChangeOrientation(3,2);
+    printf("\n");
+}
+//
 void testDataConversion(){
     //3
     int x = convertSensorDataToUnexploredPath(6,0);
@@ -113,45 +181,6 @@ void testDataConversion(){
     // x = convertSensorDataToAbsouluteBits(6,4);
     // printf("%d\n", x);
 }
-
-
-int ChangeOrientation(int orientCar, int orientMovement){
-        while(orientCar != orientMovement){
-            if(orientCar == 3 && orientMovement == 0){
-                orientCar = turnNextOrientationRight(orientCar);
-                printf("The vehicle has to turn right.\n");
-            }
-            else if(orientCar == 0 && orientMovement == 3){
-                orientCar = turnNextOrientationLeft(orientCar);
-                printf("The vehicle has to turn Left.\n");
-            }
-            else if(orientCar > orientMovement){
-                orientCar = turnNextOrientationLeft(orientCar);
-                printf("The vehicle has to turn Left.\n");
-            }
-            else{
-                orientCar = turnNextOrientationRight(orientCar);
-                printf("The vehicle has to turn right.\n");
-            }
-        }
-        return orientMovement;
-}
-
-void testTurning(){
-    ChangeOrientation(1,3);
-    printf("\n");
-    ChangeOrientation(0,3);
-    printf("\n");
-    ChangeOrientation(3,0);
-    printf("\n");
-    ChangeOrientation(1,2);
-    printf("\n");
-    ChangeOrientation(1,3);
-    printf("\n");
-    ChangeOrientation(3,2);
-    printf("\n");
-}
-
 
 
 // int main(){

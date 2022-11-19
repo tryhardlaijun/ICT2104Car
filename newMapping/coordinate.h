@@ -22,7 +22,7 @@ coordinate makeCoordinate(int x , int y, int paths, int isLast);
 
 void printCoordinate(coordinate c);
 
-void updateCoordinateAvailablePaths(coordinate* c , int path);
+void updateCoordinatePaths(coordinate* c , int path);
 
 void updateCoordinateUnexploredPaths(coordinate* c , int path);
 
