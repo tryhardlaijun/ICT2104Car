@@ -45,10 +45,12 @@ coordinate *getTestMap()
     map = updateCoordinateToMap(map, c12);
     map = updateCoordinateToMap(map, c13);
     map = updateCoordinateToMap(map, c14);
+    // jump to [1,2] after loop found and shortest path calculated
     map = updateCoordinateToMap(map, c15);
     map = updateCoordinateToMap(map, c16);
     map = updateCoordinateToMap(map, c17);
     map = updateCoordinateToMap(map, c18);
+    // jump to [2,2] after loop found and shortest path calculated
     map = updateCoordinateToMap(map, c19);
     map = updateCoordinateToMap(map, c20);
 
@@ -285,25 +287,25 @@ void generateMap(coordinate *map)
         if (availPaths & 1)
         {
             mapToPrint[tempY + removeBordersY][tempX] = ' ';
-            addAvailPathsToGridMap(mapToPrint, tempY + getToNextCellY, tempX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY + getToNextCellY, tempX, printAvail, printStart, printExplored);
         }
         // check down is avail
         if (availPaths & 4)
         {
             mapToPrint[tempY - removeBordersY][tempX] = ' ';
-            addAvailPathsToGridMap(mapToPrint, tempY - getToNextCellY, tempX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY - getToNextCellY, tempX, printAvail, printStart, printExplored);
         }
         // check right is avail
         if (availPaths & 2)
         {
             mapToPrint[tempY][tempX + removeBordersX] = ' ';
-            addAvailPathsToGridMap(mapToPrint, tempY, tempX + getToNextCellX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY, tempX + getToNextCellX, printAvail, printStart, printExplored);
         }
         // check left is avail
         if (availPaths & 8)
         {
             mapToPrint[tempY][tempX - removeBordersX] = ' ';
-            addAvailPathsToGridMap(mapToPrint, tempY, tempX - getToNextCellX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY, tempX - getToNextCellX, printAvail, printStart, printExplored);
         }
     }
 
