@@ -80,7 +80,7 @@ int gridBorderBuilder(int heightOrWidth, int heightOrWidthFlag)
         else
             return (4 * heightOrWidth) + 1;
     }
-};
+}
 
 char *gridStringConcat(char *printExplored, int arrayWidth, char *borderStr, char *borderStrToAdd)
 {
@@ -112,6 +112,7 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
     int checkAvailMaxX = 0, checkAvailMinX = 0;
 
     int totalCoordinates = getTotalCoordinatesInMap(map);
+    // int totalCoordinates = 20;
 
     for (int i = 0; i < totalCoordinates; i++)
     {
@@ -184,22 +185,106 @@ int addOffsetForGridMap(int startPositionOffset, int startPosition, int offset)
     return startPositionOffset;
 }
 
-void addAvailPathToGridMap(char **mapToPrint, int tempY, int tempX, char printAvail, char printStart, char printExplored)
+void addAvailPathToGridMap(char **mapToPrint, int tempY, int tempX, printValues *value)
 {
     // if coordinate in grid map already has start or explored values, don't overwrite the data
-    if (mapToPrint[tempY][tempX] != printStart && mapToPrint[tempY][tempX] != printExplored)
-        mapToPrint[tempY][tempX] = printAvail;
+    if (mapToPrint[tempY][tempX] != value->start && mapToPrint[tempY][tempX] != value->explored)
+        mapToPrint[tempY][tempX] = value->explored;
 }
 
-void generateMap(coordinate *map)
+void printFullMap(char **map, int gridHeight)
+{
+    printf("Traversed Map\n");
+    for (int i = gridHeight - 1; i >= 0; --i)
+    {
+        printf("%s\n", map[i]);
+    }
+    printf("\n\n");
+}
+
+char **buildGridMap(coordinate *map, int *gridHeight, int *startPositionY, int *startPositionX)
 {
     // zaf - can change printExplored = '1' and printAvail to '0'
     //     - comment c15-c20 or edit coordinates of getTestMap() to test for this
-    char printStart = 's', printExplored = ' ', printAvail = ' ';
+    // char printStart = 's', printExplored = ' ', printAvail = ' ';
 
     // initialise values and compute size of map
-    int carArrHeight = 0, carArrWidth = 0, startPositionY = 0, startPositionX = 0;
-    computeSizeOfMap(map, &carArrHeight, &carArrWidth, &startPositionY, &startPositionX);
+    int carArrHeight = 0, carArrWidth = 0;
+    computeSizeOfMap(map, &carArrHeight, &carArrWidth, startPositionY, startPositionX);
+
+    // printf("\nsize of map = arrayheight: %d, arraywidth: %d, startPosY: %d, startPosX:%d\n", carArrHeight, carArrWidth, startPositionY, startPositionX);
+
+    // // calculate offset because of borders
+    // int startPositionYOffset = 1, startPositionXOffset = 2;
+    // int getToNextCellY = 2, getToNextCellX = 4;
+    // int removeBordersY = getToNextCellY / 2, removeBordersX = getToNextCellX / 2;
+
+    // // if car does not start at the original position, e.g. [0,0], we add more offsets
+    // // add 2 to offset Y because e.g.   + - +   the position of 's' to next cell 'e', jumps by getToNextCellY = 2
+    // //                                  | e |
+    // //                                  + - +
+    // //                                  | s |
+    // //                                  + - +
+    // startPositionYOffset = addOffsetForGridMap(startPositionYOffset, startPositionY, getToNextCellY);
+    // // add 4 to offset X because e.g.   + - + - +   the position of 's' to next cell 'e', jumps by getToNextCellX = 4
+    // //                                  | s | e |
+    // //                                  + - + - +
+    // startPositionXOffset = addOffsetForGridMap(startPositionXOffset, startPositionX, getToNextCellX);
+
+    //  if gridMap == NULL -zaff
+
+    // build empty map first, 0 will trigger if condition for height, 1 will trigger else condition for width
+    // grid height will be used to free the fullMap from main.c
+    *gridHeight = gridBorderBuilder(carArrHeight, 0);
+    int gridWidth = gridBorderBuilder(carArrWidth, 1);
+
+    // printf("\ngridHeight = %d, gridWidth = %d\n", gridHeight, gridWidth);
+
+    // allocate memory for height of grid map
+    char **mapToPrint = (char **)malloc(*gridHeight * sizeof(char *));
+    if (mapToPrint == NULL)
+    {
+        printf("die\n");
+        exit(0);
+    }
+    for (int i = 0; i < *gridHeight; i++)
+    {
+        // allocate memory for width of map
+        mapToPrint[i] = (char *)malloc(gridWidth + 1);
+        if (mapToPrint[i] == NULL)
+        {
+            printf("die\n");
+            exit(0);
+        }
+    }
+
+    // at each row of mapToPrint, add borders around and inside the map to represent cells
+    for (int i = 0; i < *gridHeight; i++)
+    {
+        gridBuilder(mapToPrint[i], i, carArrWidth);
+    }
+
+    // just for printing an empty map
+    printf("Empty Map\n");
+    for (int i = *gridHeight - 1; i >= 0; --i)
+    {
+        printf("%s\n", mapToPrint[i]);
+    }
+    printf("\n\n");
+
+    return mapToPrint;
+}
+
+// char **generateFullMap(coordinate *map, int *gridHeight)
+void generateFullMap(coordinate *map, char **mapToPrint, int gridHeight, printValues *value, int startPositionY, int startPositionX)
+{
+    // zaf - can change printExplored = '1' and printAvail to '0'
+    //     - comment c15-c20 or edit coordinates of getTestMap() to test for this
+    // char printStart = 's', printExplored = ' ', printAvail = ' ';
+
+    // initialise values and compute size of map
+    // int carArrHeight = 0, carArrWidth = 0, startPositionY = 0, startPositionX = 0;
+    // computeSizeOfMap(map, &carArrHeight, &carArrWidth, &startPositionY, &startPositionX);
 
     // printf("\nsize of map = arrayheight: %d, arraywidth: %d, startPosY: %d, startPosX:%d\n", carArrHeight, carArrWidth, startPositionY, startPositionX);
 
@@ -220,35 +305,38 @@ void generateMap(coordinate *map)
     //                                  + - + - +
     startPositionXOffset = addOffsetForGridMap(startPositionXOffset, startPositionX, getToNextCellX);
 
-    // build empty map first, 0 will trigger if condition for height, 1 will trigger else condition for width
-    int gridHeight = gridBorderBuilder(carArrHeight, 0);
-    int gridWidth = gridBorderBuilder(carArrWidth, 1);
+    //  if gridMap == NULL -zaff
 
-    // printf("\ngridHeight = %d, gridWidth = %d\n", gridHeight, gridWidth);
+    // // build empty map first, 0 will trigger if condition for height, 1 will trigger else condition for width
+    // // grid height will be used to free the fullMap from main.c
+    // *gridHeight = gridBorderBuilder(carArrHeight, 0);
+    // int gridWidth = gridBorderBuilder(carArrWidth, 1);
 
-    // allocate memory for height of grid map
-    char **mapToPrint = (char **)malloc(gridHeight * sizeof(char *));
-    if (mapToPrint == NULL)
-    {
-        printf("die\n");
-        exit(0);
-    }
-    for (int i = 0; i < gridHeight; i++)
-    {
-        // allocate memory for width of map
-        mapToPrint[i] = (char *)malloc(gridWidth + 1);
-        if (mapToPrint[i] == NULL)
-        {
-            printf("die\n");
-            exit(0);
-        }
-    }
+    // // printf("\ngridHeight = %d, gridWidth = %d\n", gridHeight, gridWidth);
 
-    // at each row of mapToPrint, add borders around and inside the map to represent cells
-    for (int i = 0; i < gridHeight; i++)
-    {
-        gridBuilder(mapToPrint[i], i, carArrWidth);
-    }
+    // // allocate memory for height of grid map
+    // char **mapToPrint = (char **)malloc(*gridHeight * sizeof(char *));
+    // if (mapToPrint == NULL)
+    // {
+    //     printf("die\n");
+    //     exit(0);
+    // }
+    // for (int i = 0; i < *gridHeight; i++)
+    // {
+    //     // allocate memory for width of map
+    //     mapToPrint[i] = (char *)malloc(gridWidth + 1);
+    //     if (mapToPrint[i] == NULL)
+    //     {
+    //         printf("die\n");
+    //         exit(0);
+    //     }
+    // }
+
+    // // at each row of mapToPrint, add borders around and inside the map to represent cells
+    // for (int i = 0; i < *gridHeight; i++)
+    // {
+    //     gridBuilder(mapToPrint[i], i, carArrWidth);
+    // }
 
     // just for printing an empty map
     // printf("Empty Map\n");
@@ -257,6 +345,8 @@ void generateMap(coordinate *map)
     //     printf("%s\n", mapToPrint[i]);
     // }
     // printf("\n\n");
+
+    // if gridMap != NULL - zaff
 
     // initialise values to add into mapToPrint that was created
     int totalCoordinatesMoved = getTotalCoordinatesInMap(map);
@@ -270,7 +360,7 @@ void generateMap(coordinate *map)
             tempY = startPositionYOffset;
             tempX = startPositionXOffset;
             // where the car starts
-            mapToPrint[tempY][tempX] = printStart;
+            mapToPrint[tempY][tempX] = value->start;
         }
         else
         {
@@ -278,47 +368,47 @@ void generateMap(coordinate *map)
             tempY = (getToNextCellY * map[i].y) + startPositionYOffset;
             tempX = (getToNextCellX * map[i].x) + startPositionXOffset;
             // where the car moved
-            if (mapToPrint[tempY][tempX] != printStart && mapToPrint[tempY][tempX] != printExplored)
-                mapToPrint[tempY][tempX] = printExplored;
+            if (mapToPrint[tempY][tempX] != value->start && mapToPrint[tempY][tempX] != value->explored)
+                mapToPrint[tempY][tempX] = value->explored;
         }
+
+        // if last coordinate, then print e
+        if (i == totalCoordinatesMoved - 1)
+            mapToPrint[tempY][tempX] = value->end;
 
         // check available paths and open up border
         // check up is avail
         if (availPaths & 1)
         {
             mapToPrint[tempY + removeBordersY][tempX] = ' ';
-            addAvailPathToGridMap(mapToPrint, tempY + getToNextCellY, tempX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY + getToNextCellY, tempX, value);
         }
         // check down is avail
         if (availPaths & 4)
         {
             mapToPrint[tempY - removeBordersY][tempX] = ' ';
-            addAvailPathToGridMap(mapToPrint, tempY - getToNextCellY, tempX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY - getToNextCellY, tempX, value);
         }
         // check right is avail
         if (availPaths & 2)
         {
             mapToPrint[tempY][tempX + removeBordersX] = ' ';
-            addAvailPathToGridMap(mapToPrint, tempY, tempX + getToNextCellX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY, tempX + getToNextCellX, value);
         }
         // check left is avail
         if (availPaths & 8)
         {
             mapToPrint[tempY][tempX - removeBordersX] = ' ';
-            addAvailPathToGridMap(mapToPrint, tempY, tempX - getToNextCellX, printAvail, printStart, printExplored);
+            addAvailPathToGridMap(mapToPrint, tempY, tempX - getToNextCellX, value);
         }
     }
 
-    printf("Traversed Map\n");
+    printf("\nTraversed Map\n");
     for (int i = gridHeight - 1; i >= 0; --i)
     {
         printf("%s\n", mapToPrint[i]);
     }
     printf("\n\n");
 
-    for (int i = 0; i < gridHeight; i++)
-    {
-        free(mapToPrint[i]);
-    }
-    free(mapToPrint);
+    // return mapToPrint;
 }

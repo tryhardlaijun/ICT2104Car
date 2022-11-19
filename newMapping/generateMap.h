@@ -1,6 +1,14 @@
 #include <string.h>
 #include "coordinate.h"
 
+typedef struct printValues
+{
+    char start;
+    char explored;
+    char avail;
+    char end;
+} printValues;
+
 coordinate *getTestMap();
 
 int gridBorderBuilder(int heightOrWidth, int heightOrWidthFlag);
@@ -13,6 +21,12 @@ int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *st
 
 int addOffsetForGridMap(int startPositionOffset, int startPosition, int offset);
 
-void addAvailPathToGridMap(char **mapToPrint, int tempY, int tempX, char printAvail, char printStart, char printExplored);
+void addAvailPathToGridMap(char **mapToPrint, int tempY, int tempX, printValues *value);
 
-void generateMap(coordinate *map);
+// char **generateFullMap(coordinate *map, int *gridHeight);
+// new stuff
+void printFullMap(char **map, int gridHeight);
+
+char **buildGridMap(coordinate *map, int *gridHeight, int *startPositionY, int *startPositionX);
+
+void generateFullMap(coordinate *map, char **mapToPrint, int gridHeight, printValues *value, int startPositionY, int startPositionX);
