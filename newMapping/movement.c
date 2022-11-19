@@ -1,7 +1,7 @@
 #include "coordinate.h"
 
 enum movement{YPlus, XPlus, YMinus, XMinus};
-enum turns{FORWARD, RIGHT, REVERSE, LEFT};
+enum turns{UPWARD, RIGHT, BACKWARD, LEFT};
 
 int updateUnexploredPath(coordinate* c, int bitPosition){
     if(bitPosition < 0 && bitPosition > 4)
@@ -38,12 +38,12 @@ int updateXYCoordinate(coordinate* currentCoordinate, int movedDirection){
     return 1;
 }
 
-//Return direction. 0 = Forwred, 1 = Right, 2 = Reverse , 3 = LEfT
+//Return direction. 0 = Forwred, 1 = Right, 2 = BACKWARD , 3 = LEfT
 int getNextMove(coordinate* c){
     //remove all bits but the 2nd bit. (Check If front is open)
-    if(c->paths & (1<< FORWARD)){
-        printf("Move Forward\n");
-        return FORWARD;
+    if(c->paths & (1<< UPWARD)){
+        printf("Move UPWARD\n");
+        return UPWARD;
     }
     //remove all bits but the 1st bit. (Check If right is open)
     else if(c->paths & (1 << RIGHT)){
@@ -56,10 +56,10 @@ int getNextMove(coordinate* c){
         return LEFT;
     }
     // It is a dead end all bits are 0.
-    else if(c->paths & (1 << REVERSE)){
+    else if(c->paths & (1 << BACKWARD)){
         printf("Backwards\n");
         //Car would turn around by turning right twice
-        return REVERSE;
+        return BACKWARD;
     }
     else{
         // DONT MOVE.
