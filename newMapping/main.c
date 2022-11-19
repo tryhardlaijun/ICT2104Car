@@ -56,6 +56,7 @@ coordinate* exploreMap(coordinate* map, car* Car, int sensedData){
                 return map;
             }
             coordinate * shortestPath = findShortestPathInMap(map,tmp);
+            
             test(shortestPath,Car);
             coordinate *mapCoordinate = (findCoordinateBasedOnXY(map,carC->x,carC->y));
             *carC = *mapCoordinate;
@@ -66,6 +67,7 @@ coordinate* exploreMap(coordinate* map, car* Car, int sensedData){
             }
             updateUnexploredPath(carC,Car->orientation);
             *mapCoordinate = *carC;
+            getPrintedMap(map, shortestPath);
             reset(&shortestPath);
         }
         else{
@@ -107,8 +109,8 @@ int main()
     printf("\n\n");
     printMap(map);
     printf("\n\n");
-    coordinate *shorttestPath = findShortestPathInMap(map, map[4]);
-    getPrintedMap(map, shorttestPath);
-    reset(&shorttestPath);
+    coordinate x = {3,2,0,0};
+    coordinate *shorttestPath = findShortestPathInMapByStartAndEnd(map , map[0], x);
+    getPrintedMap(map,shorttestPath);
     reset(&map);
 }
