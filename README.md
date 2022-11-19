@@ -24,7 +24,15 @@ The system reads a sensorArray list consisting of the possible paths that it can
 From here onwards, we will find the shortest path to the next available path that has not been explored by the car.
 
 # Breadth First Search
-Our program makes use of breadth first search in order to detect the path that has junctions. It does this by creating a linked list, starting at the first point and initializing a visited array, and then marking that node as visited. It then checks if there is multiple open paths for that node using the "paths" variable of the coordinate. If there is multiple paths, it stores the paths in the linked list. It then checks if the coordinate is in the map. If it is not in the map, the coordinate will be added into the map as well as the visited array. If it is in the map, it resets the bits so that the program thinks it is a dead end and does not add the coordinate to the visited array.
+Our program makes use of breadth first search in order to detect the path that has junctions. It does this by creating a linked list, starting at the first point and initializing a visited array, and then marking that node as visited. It then checks if there is multiple open paths for that node using the "paths" variable of the coordinate. It then checks if the coordinate is in the map. If it is not in the map, the coordinate will be added into the map as well as the visited array. If it is in the map, it resets the bits so that the program thinks it is a dead end and does not add the coordinate to the visited array. If there is multiple paths, it will explore each path and store each of them into a list. Once it has reached the ending point, the program prints out all the different maps for the paths that it took, along with the shortest path to the next junction.
+<br>
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202843050-b6949604-2b5d-4e5b-9b0d-524971431479.png">
+<br>
+Here, we can see that the car has went to [1,3] and has detected that there are three different paths. It stores each path that it took in a different map.
+
+
+<img width="292" alt="image" src="https://user-images.githubusercontent.com/49942089/202843081-588881b8-39d7-4966-b3ea-650a308de301.png">
+
 
 # Printing of the map
 We first start off by computing the size of the map, as this will be printed in a 2D array. By computing the size of the map, we can account for the borders that will be printed, as well as the initial starting position of the car.
