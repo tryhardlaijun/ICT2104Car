@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "coordinate.h"
+#include "map.h"
 #include "generateMap.h"
 
 coordinate *getTestMap()
@@ -81,10 +82,10 @@ int gridBorderBuilder(int heightOrWidth, int heightOrWidthFlag)
     }
 };
 
-char *gridStringConcat(char *printExplored, int arrayWidth, char *borderStr, char *borderStrToAdd, int strLen)
+char *gridStringConcat(char *printExplored, int arrayWidth, char *borderStr, char *borderStrToAdd)
 {
-    if (arrayWidth == 1)
-        return strcpy(printExplored, borderStr);
+    // if (arrayWidth == 1)
+    //     return strcpy(printExplored, borderStr);
     strcpy(printExplored, borderStr);
     for (int i = 0; i < arrayWidth; i++)
     {
@@ -95,13 +96,12 @@ char *gridStringConcat(char *printExplored, int arrayWidth, char *borderStr, cha
 
 char *gridBuilder(char *printExplored, int index, int arrayWidth)
 {
-    int strLen = 7;
     char *borderStrOuter = "+", *borderStrOuterToAdd = " - +";
     char *borderStrInner = "|", *borderStrInnerToAdd = "   |";
 
     if (index % 2 == 0)
-        return gridStringConcat(printExplored, arrayWidth, borderStrOuter, borderStrOuterToAdd, strLen);
-    return gridStringConcat(printExplored, arrayWidth, borderStrInner, borderStrInnerToAdd, strLen);
+        return gridStringConcat(printExplored, arrayWidth, borderStrOuter, borderStrOuterToAdd);
+    return gridStringConcat(printExplored, arrayWidth, borderStrInner, borderStrInnerToAdd);
 };
 
 int computeSizeOfMap(coordinate *map, int *arrayHeight, int *arrayWidth, int *startPositionY, int *startPositionX)

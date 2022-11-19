@@ -5,7 +5,7 @@ coordinate *getTestMap();
 
 int gridBorderBuilder(int heightOrWidth, int heightOrWidthFlag);
 
-char *gridStringConcat(char *printExplored, int arrayWidth, char *borderStr, char *borderStrToAdd, int strLen);
+char *gridStringConcat(char *printExplored, int arrayWidth, char *borderStr, char *borderStrToAdd);
 
 char *gridBuilder(char *printExplored, int index, int arrayWidth);
 
