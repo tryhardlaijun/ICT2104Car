@@ -100,20 +100,15 @@ int main()
                         0b001, 0b001,0b001,0b001};
     // int sensorArray[]= {0b001,0b001,0b001,0};
     for (int i = 0; i < 24; i++){
-        if(i == 17){
-            printf("g");
-        }
         map = exploreMap(map,&Car,sensorArray[i]);
     }
-    
+
     printf("\n\n");
-    
     printf("\n\n");
     printMap(map);
-    
+    printf("\n\n");
+    coordinate *shorttestPath = findShortestPathInMap(map, map[4]);
+    getPrintedMap(map, shorttestPath);
+    reset(&shorttestPath);
     reset(&map);
-    // coordinate *testMap = getTestMap();
-    // printMap(testMap);
-    // generateMap(testMap);
-    // free(testMap);
 }
