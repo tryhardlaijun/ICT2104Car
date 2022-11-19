@@ -7,11 +7,19 @@ coordinate* updateMiniMap(coordinate* mainMap, coordinate* pathMap){
     int lastPosition = getTotalCoordinatesInMap(pathMap);
     coordinate *pathCoordinate = &(pathMap[lastPosition-1]);
     coordinate *nextCoordinate = (coordinate *) malloc(sizeof(coordinate));
+    // resetUnexploredPath(pathCoordinate);
+    int movement = getNextMove(pathCoordinate);
+    updateUnexploredPath(pathCoordinate,movement);
+    // Transfer into in to next Coordinate
     *nextCoordinate = *pathCoordinate;
-    resetUnexploredPath(pathCoordinate);
-    int movement = getNextMove(nextCoordinate);
-    updateUnexploredPath(nextCoordinate,movement);
     updateXYCoordinate(nextCoordinate ,movement);
+    coordinate* tmp = (findCoordinateBasedOnXY(mainMap, nextCoordinate->x,nextCoordinate->y));
+    if(tmp == NULL){
+        free(nextCoordinate);
+        return NULL;
+    }
+    *nextCoordinate = *tmp;
+    availToExploredPath(nextCoordinate);
     updateLoop(nextCoordinate,pathCoordinate);
     return nextCoordinate;
 }
@@ -28,7 +36,19 @@ int findNumberOf1Bits(int num){
     return count;
 }
 
+coordinate* createNewPathToLinkedList(Node* node, Node* head, int *numberOfPaths){
+    // Make another copy of the map via mallocs
+    coordinate* mapCopy = copyMap(node->data);
+    // Add a new node in the linked list
+    insertAtEnd(&head,*numberOfPaths, mapCopy);
+    // Increase number of paths
+    (*numberOfPaths)+=1;
+}
 coordinate* findShortestPathInMap(coordinate* map , coordinate start){
+    if(isMapFullyExplored(map) < 0){
+        printf("Map fully explored\n");
+        return NULL;
+    }
     // Setup linked List
     Node *head = NULL;
     // Setup number of paths
@@ -37,6 +57,8 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
     coordinate * c =(coordinate *) malloc(sizeof(coordinate));
     // Set up shortPath 
     coordinate* shortestPath = NULL;
+    // Set up visited Coordinates
+    coordinate* visted = NULL;
     //Input coordinate sync with map
     *c = *(findCoordinateBasedOnXY(map, start.x,start.y));
     // Set isLast bit.
@@ -56,21 +78,44 @@ coordinate* findShortestPathInMap(coordinate* map , coordinate start){
             int numberOf1Bits = findNumberOf1Bits(first4Bits);
             // If not all path explored
             if(numberOf1Bits != 0){
-                if(numberOf1Bits > 1){
-                    // Make another copy of the map via mallocs
-                    coordinate* mapCopy = copyMap(node->data);
-                    // Update node data
-                    // Add a new node in the linked list
-                    insertAtEnd(&head,numberOfPaths, mapCopy);
-                    // Increase number of paths
-                    numberOfPaths++;
-                }
                 coordinate* nextCoordinate = updateMiniMap(map,node->data);
+                // Means there is more than 1 open path for that node.
+                if(numberOf1Bits > 1){
+                    createNewPathToLinkedList(node,head,&numberOfPaths);
+                }
+                // Next coordinate is not found in the main map.
+                if(nextCoordinate != NULL){
+                    // Setup temp var to free malloc-ed coordinate
+                    coordinate tmp = *nextCoordinate;
+                    // Check if visited
+                    int checkIfVisited = checkIfAlreadyInMap(visted, tmp);
+                    // If not visited then update inot maps
+                    if(checkIfVisited == -1){
+                        // Add coordinate into map.
+                        node->data = updateCoordinateToMap(node->data, tmp);
+                        // Add node into visted.
+                        visted = updateCoordinateToMap(visted, tmp);
+                    }
+                    //else reset bits in last position so that the program would think that it is a deadend.
+                    else{
+                        resetUnexploredPath(&(node->data[lastPosition-1]));
+                    }
+                    // Free coordinate.
+                    free(nextCoordinate);
+                }
+                else{
+                    shortestPath = copyMap(node->data);
+                    isDone = 0;
+                    free(nextCoordinate);
+                    break;
+                }
             }
         }
-        Node* node = search(head,0);
-        // isDone = 1;
+        printLinkedlist(head);
+        printf("\n\n\n\n");
+        printMap(shortestPath);
     }
-
-
+    reset(&visted);
+    freeList(head);
+    return shortestPath;
 }
