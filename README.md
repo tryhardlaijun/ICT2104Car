@@ -1,22 +1,19 @@
 # ICT2104 Mapping
 # Process of Program
-<br>At the start of the program, it checks if the map is initialized. If not, initialize it. Next, it finds out where the car currently is on the map. It checks the next available path and then moves. It then checks if the next coordinate has been explored. This process repeats until the program detects that the map has been fully explored. 
+<br>At the start of the program, it checks if the map is initialized. If not, initialize it. It uses the sensorArray data to determine the possible paths for the car and updates the available and unnexplored paths of the car. Next, the car moves and it updates the unexplored path. This process repeats until the program detects that the map has been fully explored. 
 
 # Current Capabilities
-The system reads a .txt file consisting of the possible paths that it can take. The possible paths are stored with 3 bits.
-<br>First bit 1 - Moving left is possible
-<br>Second bit 1 - Moving forward is possible
-<br>Third bit 1 - Moving right is possible.
-<br> If there are multiple possible paths, the car will prioritise going front first, followed by right then left.
+The system reads a sensorArray list consisting of the possible paths that it can take. The possible paths are stored with 4 bits.
+<br> If there are multiple possible paths, the car will prioritise going front first, followed by right, left, down.
+<br> The sensorArray values are absolute, meaning there is no orientation for the car.
 
-<br>Once the program runs, for each step taken, there will be 2 different kinds of output. Firstly, the direction moved would be printed as “Move Forward”, “Turn Right”, and “Turn Left”. Secondly, at each coordinate, there would be information about the coordinate and the car printed.
+<br>Once the program runs, for each step taken, there will be 2 different kinds of output. Firstly, the direction moved would be printed as “Move Upward”, “Move Right”, and “Move Left”. Secondly, at each coordinate, there would be information about the coordinate and the car printed.
 
 <br>Each coordinate stores the following information:
 <br>X and Y values.
-<br>pathAvail: A 3-bit value which reads the .txt file and determines the possible paths relative to where the car is facing.
+<br>paths: A 8-bit value which combines two different information:
+<br>pathAvail: A 4-bit value determines the possible paths to be taken on the map. The bit order is as follows, Left, Back, Right, Up.
 <br>pathUnexplored: Similar to pathAvail, but once the possible path is taken, the bit is removed.
-<br>nextOrientation: A 2-bit value storing the orientation of the car after its next move, relative to where the car was previously. 
-<br>selfOrientation: A 2-bit value storing the car’s current orientation.
 <br>isLast: A 1-bit value which indicates whether the coordinate is the last visited one.
 
 ### Examples of Output:
@@ -25,6 +22,9 @@ The system reads a .txt file consisting of the possible paths that it can take. 
 <br>The car is also able to detect loops and a dead end/explored point. If the car reaches a dead end/explored point, it will turn around by turning right twice. If the car reaches a loop, it will print "Loop". In the example output above, before the printing of "Loop", we grabbed where this looped coordinate is, together with the coordinate of where it came from.
 
 From here onwards, we will find the shortest path to the next available path that has not been explored by the car.
+
+# Breadth First Search
+Our program makes use of breadth first search in order to detect the path that has junctions. It does this by creating a linked list, starting at the first point and initializing a visited array, and then marking that node as visited. It then checks if there is multiple open paths for that node using the "paths" variable of the coordinate. If there is multiple paths, it stores the paths in the linked list. It then checks if the coordinate is in the map. If it is not in the map, the coordinate will be added into the map as well as the visited array. If it is in the map, it resets the bits so that the program thinks it is a dead end and does not add the coordinate to the visited array.
 
 # Printing of the map
 We first start off by computing the size of the map, as this will be printed in a 2D array. By computing the size of the map, we can account for the borders that will be printed, as well as the initial starting position of the car.
