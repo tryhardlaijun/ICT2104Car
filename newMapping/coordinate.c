@@ -43,3 +43,19 @@ void replicateCoordinate(coordinate* src , coordinate* dest){
     dest -> isLast = src -> isLast;
     dest -> paths = src -> paths;
 }
+
+void availToExploredPath(coordinate*c){
+    c->paths &= 240;
+    c->paths |= ((c->paths & 240) >> 4);
+}
+
+void resetUnexploredPath(coordinate*c){
+    c->paths &= ~15;
+}
+
+
+// int main(){
+//     coordinate c ={0,0,192,1};
+//     availToExploredPath(&c);
+//     printCoordinate(c);
+// }

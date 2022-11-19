@@ -30,3 +30,6 @@ int checkIfCoordinateMatch(coordinate a, coordinate b);
 
 void replicateCoordinate(coordinate* src , coordinate* dest);
 
+void availToExploredPath(coordinate*c);
+
+void resetUnexploredPath(coordinate*c);

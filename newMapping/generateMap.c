@@ -401,6 +401,7 @@ void generateFullMap(coordinate *map, char **mapToPrint, int gridHeight, printVa
             mapToPrint[tempY][tempX - removeBordersX] = ' ';
             addAvailPathToGridMap(mapToPrint, tempY, tempX - getToNextCellX, value);
         }
+        free(mapToPrint);
     }
 
     printf("\nTraversed Map\n");
