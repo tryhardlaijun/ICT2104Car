@@ -11,12 +11,13 @@ int main()
     coordinate start = initStartingCoordinate();
     car Car = {start, 0};
     int movement = 0;
-    int sensorArray[]= {0b011,0b001,0b001,0b010, 0b011, 
-                        0b011,0b001,0b010,0b001,0b011,
-                        0b001,0b001,0b010,0b001,0b001};
+    int sensorArray[] = {0b011, 0b001, 0b001, 0b010, 0b011,
+                         0b011, 0b001, 0b010, 0b001, 0b011,
+                         0b001, 0b001, 0b010, 0b001, 0b001};
     // int sensorArray[]= {0b001,0b001,0b001,0};
-    for (int i = 0; i < 15; i++){
-        coordinate* carC = &(Car.carCoordinate);
+    for (int i = 0; i < 15; i++)
+    {
+        coordinate *carC = &(Car.carCoordinate);
         int loopPosition = -1;
         if (map != NULL)
         {
@@ -33,16 +34,20 @@ int main()
             }
             *carC = tmp;
         }
-        if(map != NULL && loopPosition != -1){}
-        else{
+        if (map != NULL && loopPosition != -1)
+        {
+        }
+        else
+        {
 
-            int num1 = convertSensorDataToUnexploredPath(sensorArray[i],Car.orientation);
-            int num2 = convertSensorDataToAvailPath(sensorArray[i],Car.orientation);
+            int num1 = convertSensorDataToUnexploredPath(sensorArray[i], Car.orientation);
+            int num2 = convertSensorDataToAvailPath(sensorArray[i], Car.orientation);
 
             // Update the sensor coordinate into the car.
             updateCoordinateAvailablePaths(carC, num1 + (num2 << 4));
             // Find out the next move.
-            if(map== NULL){
+            if (map == NULL)
+            {
                 carC->paths &= ~(4 << 4);
             }
             //
@@ -63,15 +68,14 @@ int main()
         }
         printCoordinate(*carC);
     }
-    
+
     printf("\n\n");
-    coordinate * shorttestPath = findShortestPathInMap(map,map[4]);
+    coordinate *shorttestPath = findShortestPathInMap(map, map[4]);
     printf("\n\n");
     printMap(map);
+
+    getPrintedMap(map, shorttestPath);
+
     reset(&shorttestPath);
     reset(&map);
-    // coordinate *testMap = getTestMap();
-    // printMap(testMap);
-    // generateMap(testMap);
-    // free(testMap);
 }
