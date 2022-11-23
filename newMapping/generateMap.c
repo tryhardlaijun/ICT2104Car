@@ -228,7 +228,7 @@ char **buildGridMap(coordinate *map, int *gridHeight, int *carArrHeight, int *ca
         gridBuilder(mapToPrint[i], i, *carArrWidth);
     }
 
-    printFullMap(mapToPrint, *gridHeight, "Empty Map");
+    printFullMap(mapToPrint, *gridHeight, "Empty Map, showing size of map, before borders are removed");
 
     return mapToPrint;
 }
@@ -241,11 +241,11 @@ void generateFullMap(coordinate *map, char **mapToPrint, int gridHeight, printVa
     //                                  + - +
     //                                  | s |
     //                                  + - +
-    int startPositionYOffset = addOffsetForGridMap(offsetValue->startPositionYOffset, offsetValue->startPositionY, offsetValue->getToNextCellY);
+    offsetValue->startPositionYOffset = addOffsetForGridMap(offsetValue->startPositionYOffset, offsetValue->startPositionY, offsetValue->getToNextCellY);
     // add 4 to offset X because e.g.   + - + - +   the position of 's' to next cell 'e', jumps by getToNextCellX = 4
     //                                  | s | e |
     //                                  + - + - +
-    int startPositionXOffset = addOffsetForGridMap(offsetValue->startPositionXOffset, offsetValue->startPositionX, offsetValue->getToNextCellX);
+    offsetValue->startPositionXOffset = addOffsetForGridMap(offsetValue->startPositionXOffset, offsetValue->startPositionX, offsetValue->getToNextCellX);
 
     // initialise values to add into mapToPrint that was created
     int totalCoordinatesMoved = getTotalCoordinatesInMap(map);
@@ -256,8 +256,8 @@ void generateFullMap(coordinate *map, char **mapToPrint, int gridHeight, printVa
         int availPaths = map[i].paths >> 4;
         if (i == 0)
         {
-            tempY = startPositionYOffset;
-            tempX = startPositionXOffset;
+            tempY = offsetValue->startPositionYOffset;
+            tempX = offsetValue->startPositionXOffset;
             // where the car starts
             mapToPrint[tempY][tempX] = value->start;
         }
@@ -313,8 +313,10 @@ void cleanMap(int carArrHeight, int carArrWidth, char **mapToPrint, printOffsets
     {
         for (int k = 0; k < carArrWidth; k++)
         {
-            tempY = (offsetValue->getToNextCellY * i) + offsetValue->startPositionYOffset;
-            tempX = (offsetValue->getToNextCellX * k) + offsetValue->startPositionXOffset;
+            // the reason removeBordersY and removeBordersX is used is that it is static and is always 1 and 2,
+            // which is the original offset of the border incase startPosition is changed
+            tempY = (offsetValue->getToNextCellY * i) + offsetValue->removeBordersY;
+            tempX = (offsetValue->getToNextCellX * k) + offsetValue->removeBordersX;
             // remove any visited coordinate
             mapToPrint[tempY][tempX] = ' ';
         }
@@ -338,8 +340,9 @@ void generateShortestPathMap(coordinate *shortestPathMap, coordinate *originalMa
     int tempY = 0, tempX = 0;
     // start positions should be the first item in shortest path as [0] is where the car stops to analyse shortest path
     int startPositionY = shortestPathMap[0].y, startPositionX = shortestPathMap[0].x;
-    int startPositionYOffset = addOffsetForGridMap(offsetValue->startPositionYOffset, startPositionY, offsetValue->getToNextCellY);
-    int startPositionXOffset = addOffsetForGridMap(offsetValue->startPositionXOffset, startPositionX, offsetValue->getToNextCellX);
+    // we can get this from offsetValue struct
+    // int startPositionYOffset = addOffsetForGridMap(offsetValue->startPositionYOffset, startPositionY, offsetValue->getToNextCellY);
+    // int startPositionXOffset = addOffsetForGridMap(offsetValue->startPositionXOffset, startPositionX, offsetValue->getToNextCellX);
 
     int shortestCoordinatesMoved = getTotalCoordinatesInMap(shortestPathMap);
 
@@ -347,7 +350,7 @@ void generateShortestPathMap(coordinate *shortestPathMap, coordinate *originalMa
     {
         if (i == 0)
         {
-            mapToPrint[startPositionYOffset][startPositionXOffset] = value->start;
+            mapToPrint[offsetValue->startPositionYOffset][offsetValue->startPositionXOffset] = value->start;
             continue;
         }
         // 2 and 4 same reason as explained when adding offset  to startPositionOffset
