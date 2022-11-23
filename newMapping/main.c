@@ -67,7 +67,6 @@ coordinate* exploreMap(coordinate* map, car* Car, int sensedData){
             }
             updateUnexploredPath(carC,Car->orientation);
             *mapCoordinate = *carC;
-            getPrintedMap(map, shortestPath);
             reset(&shortestPath);
         }
         else{
@@ -95,11 +94,11 @@ int main()
     coordinate start = initStartingCoordinate();
     car Car = {start, 0};
 
-    int sensorArray[]= {0b011,0b001,0b001,0b010, 0b011, 
+    int sensorArray[]= {0b111,0b001,0b001,0b010, 0b011, 
                         0b011,0b001,0b010,0b001,0b011,
                         0b001,0b001,0b010,0b001,0b001,
                         0b100,0b000,0b001,0b010,0b001,
-                        0b001, 0b001,0b001,0b001};
+                        0b0001,0b001,0b001,0b000};
     // int sensorArray[]= {0b001,0b001,0b001,0};
     for (int i = 0; i < 24; i++){
         map = exploreMap(map,&Car,sensorArray[i]);
@@ -109,8 +108,11 @@ int main()
     printf("\n\n");
     printMap(map);
     printf("\n\n");
-    coordinate x = {3,2,0,0};
-    coordinate *shorttestPath = findShortestPathInMapByStartAndEnd(map , map[0], x);
+    coordinate x = {0,0,0,0};    
+    coordinate y = {3,2,0,0};
+    coordinate *shorttestPath = findShortestPathInMapByStartAndEnd(map ,x,y);
     getPrintedMap(map,shorttestPath);
+    free(shorttestPath);
     reset(&map);
+
 }
