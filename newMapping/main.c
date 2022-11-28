@@ -4,8 +4,7 @@
 #include "car.h"
 #include "generateMap.h"
 #include "breatheFirstSearch.h"
-
-
+#include "mainBlackBox.h"
 
 coordinate * senseCoordinateAndAddToMap (coordinate* map, car *Car, int sensedData, coordinate* carC){
     int unexplorePath = convertSensorDataToUnexploredPath(sensedData,Car->orientation);
@@ -89,6 +88,8 @@ coordinate* exploreMap(coordinate* map, car* Car, int sensedData){
 
 int main()
 {
+
+
     coordinate *map = NULL;
     // init
     coordinate start = initStartingCoordinate();
@@ -99,6 +100,21 @@ int main()
                         0b001,0b001,0b010,0b001,0b001,
                         0b100,0b000,0b001,0b010,0b001,
                         0b0001,0b001,0b001,0b000};
+
+    // int sensorArray[] = {0b001, 0b001, 0b010, 0b101,
+    //                         0b100, 0b001, 0b100, 
+    //                         0b001, 0b001, 0b001, 0b100,
+    //                         0b001, 0b101,
+    //                         0b000,
+    //                         0b001, 0b100, 
+    //                         0b001, 0b001, 0b100,};
+
+    
+
+    // int sensorArray[19] = {0}; -- zaf
+
+    // testWithNegXandYSensorArray(sensorArray, 19); -- zaf
+
     // int sensorArray[]= {0b001,0b001,0b001,0};
     for (int i = 0; i < 24; i++){
         map = exploreMap(map,&Car,sensorArray[i]);
@@ -108,11 +124,28 @@ int main()
     printf("\n\n");
     printMap(map);
     printf("\n\n");
+
+    // coordinate x = testWithNegXandYStartCoord(); -- zaf
+    // coordinate y = testWithNegXandYEndCoord(); -- zaf
     coordinate x = {0,0,0,0};    
     coordinate y = {3,2,0,0};
-    coordinate *shorttestPath = findShortestPathInMapByStartAndEnd(map ,x,y);
+
+    coordinate *shorttestPath = findShortestPathInMapByStartAndEnd(map ,x,y);    
     getPrintedMap(map,shorttestPath);
     free(shorttestPath);
     reset(&map);
 
 }
+
+
+// typedef struct coordinate
+// {
+//     //X coordiante of the car ( 4 btyes ) // highest +-127
+//     int x : 8;
+//     //Y coordiante of the car ( 4 btyes ) // highest +-127
+//     int y : 8;
+//     // 8 bit datatype. First 4 bit is pathavailables , last 4 bits is pathUnexplored.
+//     unsigned int paths : 8;
+//     // 1 = Last explored coordinate.
+//     unsigned int isLast : 1; // 1 bit
+// }coordinate; // 25 bits total.
