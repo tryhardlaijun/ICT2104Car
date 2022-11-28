@@ -1,4 +1,6 @@
 # ICT2104 Mapping
+### Video Link
+https://youtu.be/hH59fNtPMeE
 # Process of Program
 <br>At the start of the program, it checks if the map is initialized. If not, initialize it. It uses the sensorArray data to determine the possible paths for the car and updates the available and unnexplored paths of the car. Next, the car moves and it updates the unexplored path. This process repeats until the program detects that the map has been fully explored. 
 
