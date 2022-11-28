@@ -29,15 +29,15 @@ Our program makes use of breadth first search in order to detect the shortest pa
 <br>
 Here, we can see that the car has went to [1,3] and has detected that there are three different paths. It stores each path that it took in a different map.
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202858143-955fc6ed-cf63-4f8c-acce-3b58f62a832d.png">
+<img width="200" alt="image" src="https://user-images.githubusercontent.com/49942089/204198413-8f1ce3b4-8e3c-41ce-a4f5-9e35f91e78a9.png">
 <br>
 Once it has traversed all the nodes at the first depth, it continues on to the nodes at the second depth and prints the path again.
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202858187-41d6ed5a-5bcf-498d-b87a-533c07251fab.png">
+<img width="200" alt="image" src="https://user-images.githubusercontent.com/49942089/202858187-41d6ed5a-5bcf-498d-b87a-533c07251fab.png">
 <br>
 Lastly, it traverses the nodes at the third depth and proceeds to print the shortest path to the next junction.
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202858350-9577d32c-fe59-469f-ac9a-fa87acdeaed0.png">
+<img width="200" alt="image" src="https://user-images.githubusercontent.com/49942089/202858350-9577d32c-fe59-469f-ac9a-fa87acdeaed0.png">
 <br>
 
 
