@@ -24,7 +24,7 @@ The system reads a sensorArray list consisting of the possible paths that it can
 From here onwards, we will find the shortest path to the next available path that has not been explored by the car.
 
 # Breadth First Search
-Our program makes use of breadth first search in order to detect the shortest path.  It does this by creating a linked list, starting at the first point and initializing a visited array, and then marking that node as visited. It then checks if there is multiple open paths for that node using the "paths" variable of the coordinate. It then checks if the coordinate is in the map. If it is not in the map, the coordinate will be added into the map as well as the visited array. If it is in the map, it resets the bits so that the program thinks it is a dead end and does not add the coordinate to the visited array. If there is multiple paths, it will explore each path and store each of them into a list. For each level, it explores all the possible nodes at the present depth and prints the map before proceeding on to the next depth.
+Our program makes use of breadth first search in order to detect the shortest path given a starting and ending coordinate. For each level, it explores all the possible nodes at the present depth before proceeding on to the next depth. It does this by creating a linked list to contain the possible paths, starting at the initial coordinate and creating a visited array, and then marking that coordinate as visited. It then checks if there is multiple open paths for that coordinate using the "paths" variable of the coordinate. For each possible path, it creates a new node in the linked list. In each node, the following coordinates that the car visits will be added on until it reaches the end point or if a coordinate has been visited before in another node. Thus, each node contains it's own mini map and the node with the shortest amount of coordinates will be the shortest path. The program will return the shortest path as an array of visited coordinates just like the original map.
 
 <br>
 Here, we can see that the car has went to [1,3] and has detected that there are three different paths. It stores each path that it took in a different map.
@@ -42,7 +42,7 @@ Lastly, it traverses the nodes at the third depth and proceeds to print the shor
 
 
 <br>
-<img width="292" alt="image" src="https://user-images.githubusercontent.com/49942089/202843081-588881b8-39d7-4966-b3ea-650a308de301.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/204197605-f31e54c5-7ef4-439a-9b3b-313a278783f3.png">
 
 
 # Printing of the map
