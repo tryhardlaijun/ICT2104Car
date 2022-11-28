@@ -42,7 +42,7 @@ Lastly, it traverses the nodes at the third depth and proceeds to print the shor
 
 
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/204197605-f31e54c5-7ef4-439a-9b3b-313a278783f3.png">
+<img width="200" alt="image" src="https://user-images.githubusercontent.com/49942089/204197605-f31e54c5-7ef4-439a-9b3b-313a278783f3.png">
 
 
 # Printing of the map
