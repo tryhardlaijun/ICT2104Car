@@ -14,7 +14,7 @@ coordinate* updateMiniMap(coordinate* mainMap, coordinate* pathMap){
     *nextCoordinate = *pathCoordinate;
     updateXYCoordinate(nextCoordinate ,movement);
     coordinate* tmp = (findCoordinateBasedOnXY(mainMap, nextCoordinate->x,nextCoordinate->y));
-    if(tmp == NULL){
+    if(tmp == NULL || tmp->paths & 15 != 0){
         free(nextCoordinate);
         return NULL;
     }
@@ -165,6 +165,9 @@ coordinate* findShortestPathInMapByStartAndEnd(coordinate* map , coordinate star
                 // Means there is more than 1 open path for that node.
                 if(numberOf1Bits > 1){
                     createNewPathToLinkedList(node,head,&numberOfPaths);
+                }
+                if(nextCoordinate == NULL){
+                    continue;
                 }
                 // Next coordinate is not found in the main map.
                 if(!checkIfCoordinateMatch(*nextCoordinate,end)){

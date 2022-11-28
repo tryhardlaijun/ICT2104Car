@@ -21,10 +21,6 @@ int convertSensorDataToAvailPath(int num, int orientation);
 
 int ChangeOrientation(int orientCar, int orientMovement);
 
-void test(coordinate* map, car* Car);
-
-void testTurning();
-
-void testDataConversion();
+void moveCarAccordingToPath(coordinate* map, car* Car);
 
 void modifyOrientation(car* Car);
