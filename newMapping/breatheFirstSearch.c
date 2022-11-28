@@ -150,6 +150,7 @@ coordinate* findShortestPathInMapByStartAndEnd(coordinate* map , coordinate star
     insertAtEnd(&head,0, c);
     int isDone = 1;
     while(isDone){
+        int deadPath = 0;
         for(int i = 0; i < numberOfPaths; i++){
             Node* node = search(head,i);
             // Get last position of the map
@@ -167,6 +168,7 @@ coordinate* findShortestPathInMapByStartAndEnd(coordinate* map , coordinate star
                     createNewPathToLinkedList(node,head,&numberOfPaths);
                 }
                 if(nextCoordinate == NULL){
+                    deadPath++;
                     continue;
                 }
                 // Next coordinate is not found in the main map.
@@ -196,12 +198,17 @@ coordinate* findShortestPathInMapByStartAndEnd(coordinate* map , coordinate star
                     free(nextCoordinate);
                     break;
                 }
+            }else{
+                deadPath++;
             }
         }
-
         printf("\n\n");
         printLinkedlist(head);
-
+        if(deadPath == numberOfPaths){
+            printf("ALL PATHS ARE DEAD, Coordinate do not exist.");
+            return NULL;
+        }
+        
 
 
     }

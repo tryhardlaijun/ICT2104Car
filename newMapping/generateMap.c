@@ -341,16 +341,16 @@ void generateShortestPathMap(coordinate *shortestPathMap, coordinate *originalMa
     // start positions should be the first item in shortest path as [0] is where the car stops to analyse shortest path
     int startPositionY = shortestPathMap[0].y, startPositionX = shortestPathMap[0].x;
     // we can get this from offsetValue struct
-    // int startPositionYOffset = addOffsetForGridMap(offsetValue->startPositionYOffset, startPositionY, offsetValue->getToNextCellY);
-    // int startPositionXOffset = addOffsetForGridMap(offsetValue->startPositionXOffset, startPositionX, offsetValue->getToNextCellX);
-
+    int startPositionYOffset = addOffsetForGridMap(offsetValue->startPositionYOffset, startPositionY, offsetValue->getToNextCellY);
+    int startPositionXOffset = addOffsetForGridMap(offsetValue->startPositionXOffset, startPositionX, offsetValue->getToNextCellX);
+    
     int shortestCoordinatesMoved = getTotalCoordinatesInMap(shortestPathMap);
 
     for (int i = 0; i < shortestCoordinatesMoved; i++)
     {
         if (i == 0)
         {
-            mapToPrint[offsetValue->startPositionYOffset][offsetValue->startPositionXOffset] = value->start;
+            mapToPrint[startPositionYOffset][startPositionXOffset] = value->start;
             continue;
         }
         // 2 and 4 same reason as explained when adding offset  to startPositionOffset
