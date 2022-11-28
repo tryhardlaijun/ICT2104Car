@@ -62,7 +62,7 @@ The map prints **'s'** for the first coordinate, and subsequently prints **'1'**
 Lastly, the completed map is printed, and deallocates memory.
 
 ### Example of completed map:
-![TraversedMap](https://user-images.githubusercontent.com/90232507/201453705-07f0a732-b3ce-42ca-bf49-7ae5239790e7.png)
+<img width="300" alt="image" src="https://user-images.githubusercontent.com/49942089/204200388-9b9530d6-837b-49f0-983d-29641dfbbe1e.png">
 
 We assume the orientation of the car is forward for wherever the car is placed down at. Thus, we can read this example from **'s'**. Afterwards, move up and continue through the path of all the **'1'**. 
 
