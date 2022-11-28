@@ -24,25 +24,24 @@ The system reads a sensorArray list consisting of the possible paths that it can
 From here onwards, we will find the shortest path to the next available path that has not been explored by the car.
 
 # Breadth First Search
-Our program makes use of breadth first search in order to detect the shortest path.  It does this by creating a linked list, starting at the first point and initializing a visited array, and then marking that node as visited. It then checks if there is multiple open paths for that node using the "paths" variable of the coordinate. It then checks if the coordinate is in the map. If it is not in the map, the coordinate will be added into the map as well as the visited array. If it is in the map, it resets the bits so that the program thinks it is a dead end and does not add the coordinate to the visited array. If there is multiple paths, it will explore each path and store each of them into a list. For each level, it explores all the possible nodes at the present depth and prints the map before proceeding on to the next depth.
+Our program makes use of breadth first search in order to detect the shortest path given a starting and ending coordinate. For each level, it explores all the possible nodes at the present depth before proceeding on to the next depth. It does this by creating a linked list to contain the possible paths, starting at the initial coordinate and creating a visited array, and then marking that coordinate as visited. It then checks if there is multiple open paths for that coordinate using the "paths" variable of the coordinate. For each possible path, it creates a new node in the linked list. In each node, the following coordinates that the car visits will be added on until it reaches the end point or if a coordinate has been visited before in another node. Thus, each node contains it's own mini map and the node with the shortest amount of coordinates will be the shortest path. The program will return the shortest path as an array of visited coordinates just like the original map.
 
 <br>
 Here, we can see that the car has went to [1,3] and has detected that there are three different paths. It stores each path that it took in a different map.
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202858143-955fc6ed-cf63-4f8c-acce-3b58f62a832d.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/204198413-8f1ce3b4-8e3c-41ce-a4f5-9e35f91e78a9.png">
 <br>
 Once it has traversed all the nodes at the first depth, it continues on to the nodes at the second depth and prints the path again.
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202858187-41d6ed5a-5bcf-498d-b87a-533c07251fab.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/204199664-316236d4-d61e-4acf-acbc-30969e031183.png">
 <br>
 Lastly, it traverses the nodes at the third depth and proceeds to print the shortest path to the next junction.
 <br>
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/202858350-9577d32c-fe59-469f-ac9a-fa87acdeaed0.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/49942089/204199376-ff1e259b-b622-4aab-8722-bd1773684abc.png">
 <br>
-
-
+At the end of the program, the map of the shortest path will be displayed.
 <br>
-<img width="292" alt="image" src="https://user-images.githubusercontent.com/49942089/202843081-588881b8-39d7-4966-b3ea-650a308de301.png">
+<img width="200" alt="image" src="https://user-images.githubusercontent.com/49942089/204197605-f31e54c5-7ef4-439a-9b3b-313a278783f3.png">
 
 
 # Printing of the map
@@ -63,7 +62,7 @@ The map prints **'s'** for the first coordinate, and subsequently prints **'1'**
 Lastly, the completed map is printed, and deallocates memory.
 
 ### Example of completed map:
-![TraversedMap](https://user-images.githubusercontent.com/90232507/201453705-07f0a732-b3ce-42ca-bf49-7ae5239790e7.png)
+<img width="300" alt="image" src="https://user-images.githubusercontent.com/49942089/204200388-9b9530d6-837b-49f0-983d-29641dfbbe1e.png">
 
 We assume the orientation of the car is forward for wherever the car is placed down at. Thus, we can read this example from **'s'**. Afterwards, move up and continue through the path of all the **'1'**. 
 
